@@ -6,7 +6,7 @@
 /*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 15:43:22 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/12/05 04:17:00 by elemesmo         ###   ########.fr       */
+/*   Updated: 2024/12/06 16:34:38 by elemesmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,11 @@ typedef struct s_minimap
 
 typedef struct s_map
 {
+	char	**file;
 	char	**matrix;
 	char	**matrix_ff;
+	int		index;
+	int		file_heigth;
 	int		x;
 	int		y;
 }		t_map;
@@ -65,9 +68,19 @@ typedef struct s_voidcollector
 }	t_vc;
 
 int		check_args(int ac, char **av);
-char	**get_map(char *file, t_map *map);
+char    **get_map(t_map *map);
 void	error(char *str);
 void	drawminimap(t_vc *vc);
 void	draw_rectangle(t_vc *vc, int h, int w, int color);
+char	**get_file(char *file, t_map *map);
+int		get_file_heigth(char *file);
+void	get_width(t_map *map);
+char	*create_top_bottom(t_map *map);
+void	second_map(t_map *map);
+int		check_map_x(t_map *map, int y);
+int		check_map_y(t_map *map);
+int		check_map(t_map *map);
+int		check_0(t_map *map);
+void	map_index(t_map *map);
 
 #endif

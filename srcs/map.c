@@ -6,7 +6,7 @@
 /*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:17 by jomendes          #+#    #+#             */
-/*   Updated: 2024/12/02 23:34:56 by elemesmo         ###   ########.fr       */
+/*   Updated: 2024/12/06 16:02:06 by elemesmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,28 +69,23 @@ int	map_heigth(char *file)
 	return (counter);
 }
 
-char	**get_map(char *file, t_map *map)
+char	**get_map(t_map *map)
 {
-	int		fd;
-	char	**maping;
-	char	*row;
-	int		line;
+	int	i;
 
-	fd = open(file, O_RDONLY);
-	map->y = map_heigth(file);
-	maping = ft_calloc((map->y + 1), sizeof(char *));
-	line = 0;
-	if (fd < 3)
-	{
-		error("Map not found\n");
+	if (!map->file)
 		return (NULL);
-	}
-	while (line < map->y)
+	map_index(map);
+	map->matrix = ft_calloc((map->y + 1), sizeof(char *));
+	if (!map->matrix)
+		return (NULL);
+	i = 0;
+	while (map->index < map->file_heigth)
 	{
-		row = get_next_line(fd);
-		maping[line++] = row;
+		map->matrix[i] = map->file[map->index];
+		i++;
+		map->index++;
 	}
-	maping[line] = NULL;
-	close(fd);
-	return (maping);
+	map->matrix[i] = NULL;
+	return (map->matrix);
 }
