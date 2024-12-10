@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:19 by jomendes          #+#    #+#             */
-/*   Updated: 2024/12/09 17:04:00 by dinda-si         ###   ########.fr       */
+/*   Updated: 2024/12/10 01:38:55 by elemesmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,21 @@ int	keyunpress(int keycode, t_vc *vc)
 
 void	movemnt(t_vc *vc)
 {
-	if (vc->play.a == 1)
+	if (vc->play.a == 1 &&
+		vc->map.matrix[((vc->play.x - 1) / (vc->mlx.x / 80))] \
+		[((vc->play.y - 1) / (vc->mlx.y / 45)) - 1] != '1')
 		vc->play.y -= vc->mlx.y / 45;
-	if (vc->play.d == 1)
-		vc->play.y += vc->mlx.y / 45;
-	if (vc->play.w == 1)
+	if (vc->play.w == 1 &&
+		vc->map.matrix[((vc->play.x + 1) / (vc->mlx.x / 80)) - 2] \
+		[((vc->play.y + 1) / (vc->mlx.y / 45)) - 1] != '1')
 		vc->play.x -= vc->mlx.x / 80;
-	if (vc->play.s == 1)
+	if (vc->play.d == 1 && 
+		vc->map.matrix[((vc->play.x - 1) / (vc->mlx.x / 80))] \
+		[((vc->play.y + 1) / (vc->mlx.y / 45))] != '1')
+		vc->play.y += vc->mlx.y / 45;
+	if (vc->play.s == 1 &&
+		vc->map.matrix[((vc->play.x + 1) / (vc->mlx.x / 80))] \
+		[((vc->play.y - 1) / (vc->mlx.y / 45))] != '1')
 		vc->play.x += vc->mlx.x / 80;
 }
 
@@ -110,8 +118,8 @@ void	init(char *file)
 	mlx.window = NULL;
 	map.matrix = NULL;
 	map.matrix_ff = NULL;
-	mlx.x = 3840; //1200
-	mlx.y = 1990; //600
+	mlx.x = 768; //3840
+	mlx.y = 398; //1990
 	play.x = 0;
 	play.y = 0;
 	play.w = 0;
@@ -133,7 +141,6 @@ void	init(char *file)
 	vc->mlx.mlx = mlx_init();
 	vc->mlx.window = mlx_new_window(vc->mlx.mlx, vc->mlx.x, vc->mlx.y, "cub3d");
 	placeplayer(vc);
-	printf("%d\n %d\n", vc->play.x, vc->play.y);
 	mlx_do_key_autorepeatoff(vc->mlx.mlx);
 	mlx_hook(vc->mlx.window, 17, 1L << 17, closegame, vc);
 	mlx_hook(vc->mlx.window, 2, 1L << 0, keypress, vc);

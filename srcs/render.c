@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:23 by jomendes          #+#    #+#             */
-/*   Updated: 2024/12/09 17:04:11 by dinda-si         ###   ########.fr       */
+/*   Updated: 2024/12/10 01:13:36 by elemesmo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ void	placeplayer(t_vc *vc)
 		{
 			if (vc->map.matrix[i][j] == 'P')
 			{
-				vc->play.x = (i * (vc->mlx.x / 80));
-				vc->play.y = (j * (vc->mlx.y / 45));
+				vc->play.x = ((i + 1) * (vc->mlx.x / 80));
+				vc->play.y = ((j + 1) * (vc->mlx.y / 45));
 				draw_rectangle(vc, vc->play.x, vc->play.y, PLAYERCOLOR);
 			}
 			j++;
