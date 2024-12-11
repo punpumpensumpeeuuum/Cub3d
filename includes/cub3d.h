@@ -6,7 +6,7 @@
 /*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 15:43:22 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/12/09 16:30:21 by dinda-si         ###   ########.fr       */
+/*   Updated: 2024/12/11 16:15:24 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ typedef struct	s_mlx
 	void			*window;
 	int				x;
 	int				y;
+	int				pixelx;
+	int				pixely;
 	void			*mlx;
 }	t_mlx;
 
@@ -87,5 +89,6 @@ int		check_map(t_map *map);
 int		check_0(t_map *map);
 void	map_index(t_map *map);
 void	placeplayer(t_vc *vc);
+void	draw_minimap_background(t_vc *vc, int x, int y, int color);
 
 #endif

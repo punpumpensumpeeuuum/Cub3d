@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:23 by jomendes          #+#    #+#             */
-/*   Updated: 2024/12/10 01:13:36 by elemesmo         ###   ########.fr       */
+/*   Updated: 2024/12/11 16:30:39 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ void draw_rectangle(t_vc *vc, int h, int w, int color)
 	int i;
 	int j;
 
-	i = w * (vc->mlx.x / 80);
-	while (i < (w * (vc->mlx.x / 80)) + (vc->mlx.x / 80))
+	i = w * vc->mlx.pixelx;
+	while (i < (w * vc->mlx.pixelx) + vc->mlx.pixelx)
 	{
-		j = h * (vc->mlx.y / 45);
-		while (j < (h * (vc->mlx.y / 45)) + (vc->mlx.y / 45))
+		j = h * (vc->mlx.pixely);
+		while (j < (h * (vc->mlx.pixely)) + (vc->mlx.pixely))
 		{
 			mlx_pixel_put(vc->mlx.mlx, vc->mlx.window, i, j, color);
 			j++;
@@ -39,11 +39,28 @@ void draw_rectangle(t_vc *vc, int h, int w, int color)
 	}
 }
 
-void	get_pos(t_vc *vc, int x, int y)
+void draw_minimap_background(t_vc *vc, int x, int y, int color)
 {
-	vc->map.x = x;
-	vc->map.y = y;
+	int width;
+	int height;
+	int	i;
+	int	j;
+
+	i = 0;
+	width = vc->mlx.pixelx * x;
+	height = vc->mlx.pixely * y;
+	while (i < height)
+	{	
+		j = 0;
+		while (j < width)
+		{
+			mlx_pixel_put(vc->mlx.mlx, vc->mlx.window, j, i, color);
+			j++;
+		}
+		i++;
+	}
 }
+
 
 void	drawminimap(t_vc *vc)
 {
@@ -57,12 +74,16 @@ void	drawminimap(t_vc *vc)
 		j = 0;
 		while (vc->map.matrix_ff[i][j])
 		{
-			draw_rectangle(vc, (vc->play.x / (vc->mlx.x / 80)), (vc->play.y / (vc->mlx.y / 45)), PLAYERCOLOR);
-			color = get_color(vc->map.matrix_ff[i][j]);
-			draw_rectangle(vc, i, j, color);
+			if (vc->map.matrix_ff[i][j])
+			{
+				color = get_color(vc->map.matrix_ff[i][j]);
+				draw_rectangle(vc, i, j, color);
+				draw_rectangle(vc, (vc->play.x / vc->mlx.pixelx), (vc->play.y / vc->mlx.pixely), PLAYERCOLOR);
+			}
 			j++;
 		}
 		i++;
+		draw_rectangle(vc, (vc->play.x / vc->mlx.pixelx), (vc->play.y / vc->mlx.pixely), PLAYERCOLOR);
 	}
 }
 
@@ -79,8 +100,8 @@ void	placeplayer(t_vc *vc)
 		{
 			if (vc->map.matrix[i][j] == 'P')
 			{
-				vc->play.x = ((i + 1) * (vc->mlx.x / 80));
-				vc->play.y = ((j + 1) * (vc->mlx.y / 45));
+				vc->play.x = ((i + 1) * vc->mlx.pixelx);
+				vc->play.y = ((j + 1) * (vc->mlx.pixely));
 				draw_rectangle(vc, vc->play.x, vc->play.y, PLAYERCOLOR);
 			}
 			j++;

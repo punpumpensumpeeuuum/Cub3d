@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:19 by jomendes          #+#    #+#             */
-/*   Updated: 2024/12/10 01:38:55 by elemesmo         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:47:13 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,22 +64,25 @@ int	keyunpress(int keycode, t_vc *vc)
 
 void	movemnt(t_vc *vc)
 {
-	if (vc->play.a == 1 &&
-		vc->map.matrix[((vc->play.x - 1) / (vc->mlx.x / 80))] \
-		[((vc->play.y - 1) / (vc->mlx.y / 45)) - 1] != '1')
-		vc->play.y -= vc->mlx.y / 45;
-	if (vc->play.w == 1 &&
-		vc->map.matrix[((vc->play.x + 1) / (vc->mlx.x / 80)) - 2] \
-		[((vc->play.y + 1) / (vc->mlx.y / 45)) - 1] != '1')
-		vc->play.x -= vc->mlx.x / 80;
-	if (vc->play.d == 1 && 
-		vc->map.matrix[((vc->play.x - 1) / (vc->mlx.x / 80))] \
-		[((vc->play.y + 1) / (vc->mlx.y / 45))] != '1')
-		vc->play.y += vc->mlx.y / 45;
-	if (vc->play.s == 1 &&
-		vc->map.matrix[((vc->play.x + 1) / (vc->mlx.x / 80))] \
-		[((vc->play.y - 1) / (vc->mlx.y / 45))] != '1')
-		vc->play.x += vc->mlx.x / 80;
+	if (vc->play.w == 1)
+		vc->play.x--;
+	if (vc->play.a == 1)
+		vc->play.y--;
+	if (vc->play.d == 1)
+		vc->play.y++;
+	if (vc->play.s == 1)
+		vc->play.x++;
+}
+
+int		render_frame(t_vc *vc)
+{
+	mlx_clear_window(vc->mlx.mlx, vc->mlx.window);
+	if (vc->minimap.onoff == 1)
+	{
+		draw_minimap_background(vc, vc->map.x, vc->map.y, 0x000000);
+		drawminimap(vc);
+	}
+	return (0);
 }
 
 // void	animation(t_vc *vc)
@@ -97,11 +100,10 @@ void	movemnt(t_vc *vc)
 int andar(t_vc *vc)
 {
 	movemnt(vc);
-    if (vc->minimap.onoff == 1){
-        drawminimap(vc);}
+	render_frame(vc);
     // usleep(500000);
 	// mlx_clear_window(vc->mlx.mlx, vc->mlx.window);
-	draw_rectangle(vc, vc->mlx.y, vc->mlx.x, 0x0FFF00);
+	// draw_minimap_background(vc, vc->map.x + 100, vc->map.y + 100, 0xFF00FF);
 	return (0);
 }
 
@@ -118,8 +120,10 @@ void	init(char *file)
 	mlx.window = NULL;
 	map.matrix = NULL;
 	map.matrix_ff = NULL;
-	mlx.x = 768; //3840
-	mlx.y = 398; //1990
+	mlx.x = 3840; //768
+	mlx.y = 1990; //398
+	mlx.pixelx = mlx.x / 80;
+	mlx.pixely = mlx.y / 45;
 	play.x = 0;
 	play.y = 0;
 	play.w = 0;
