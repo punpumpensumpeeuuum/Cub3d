@@ -6,7 +6,7 @@
 /*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:19 by jomendes          #+#    #+#             */
-/*   Updated: 2024/12/11 17:47:13 by dinda-si         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:42:32 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,42 +65,21 @@ int	keyunpress(int keycode, t_vc *vc)
 void	movemnt(t_vc *vc)
 {
 	if (vc->play.w == 1)
-		vc->play.x--;
-	if (vc->play.a == 1)
 		vc->play.y--;
+	if (vc->play.a == 1)
+		vc->play.x--;
 	if (vc->play.d == 1)
-		vc->play.y++;
-	if (vc->play.s == 1)
 		vc->play.x++;
+	if (vc->play.s == 1)
+		vc->play.y++;
 }
-
-int		render_frame(t_vc *vc)
-{
-	mlx_clear_window(vc->mlx.mlx, vc->mlx.window);
-	if (vc->minimap.onoff == 1)
-	{
-		draw_minimap_background(vc, vc->map.x, vc->map.y, 0x000000);
-		drawminimap(vc);
-	}
-	return (0);
-}
-
-// void	animation(t_vc *vc)
-// {
-// 	if (img->player.red == 1)
-// 		red(img);
-// 	else if (img->player.green == 1)
-// 		green(img);
-// 	else if (img->player.blue == 1)
-// 		blue(img);
-// 	else
-// 		white(img);
-// }
 
 int andar(t_vc *vc)
 {
 	movemnt(vc);
-	render_frame(vc);
+	// mlx_clear_window(vc->mlx.mlx, vc->mlx.window);
+	if (vc->minimap.onoff == 1)
+		drawminimap(vc);
     // usleep(500000);
 	// mlx_clear_window(vc->mlx.mlx, vc->mlx.window);
 	// draw_minimap_background(vc, vc->map.x + 100, vc->map.y + 100, 0xFF00FF);
@@ -140,10 +119,11 @@ void	init(char *file)
     second_map(&map);
 	vc->map = map;
 	vc->mlx = mlx;
-	vc->play = play;
 	vc->minimap = minimap;
 	vc->mlx.mlx = mlx_init();
+	play.sprite = mlx_xpm_file_to_image(vc->mlx.mlx, "srcs/red.xpm", &vc->mlx.pixelx, &vc->mlx.pixely);
 	vc->mlx.window = mlx_new_window(vc->mlx.mlx, vc->mlx.x, vc->mlx.y, "cub3d");
+	vc->play = play;
 	placeplayer(vc);
 	mlx_do_key_autorepeatoff(vc->mlx.mlx);
 	mlx_hook(vc->mlx.window, 17, 1L << 17, closegame, vc);

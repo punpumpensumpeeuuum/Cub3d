@@ -6,86 +6,42 @@
 /*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:23 by jomendes          #+#    #+#             */
-/*   Updated: 2024/12/11 16:30:39 by dinda-si         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:43:08 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-int	get_color(char c)
+void draw_player(t_vc *vc)
 {
-	if (c == '0')
-		return (0x000000);
-	if (c == '1')
-		return (0xFFFFFF);
-	return (0x000000);
+	mlx_put_image_to_window(vc->mlx.mlx, vc->mlx.window, vc->play.sprite, vc->play.x , vc->play.y);
 }
 
-void draw_rectangle(t_vc *vc, int h, int w, int color)
-{
-	int i;
-	int j;
+// void draw_player(t_vc *vc, int x, int y, int color)
+// {
+// 	int start_x;
+// 	int start_y;
+// 	int end_x;
+// 	int end_y;
+// 	int i;
+// 	int j;
 
-	i = w * vc->mlx.pixelx;
-	while (i < (w * vc->mlx.pixelx) + vc->mlx.pixelx)
-	{
-		j = h * (vc->mlx.pixely);
-		while (j < (h * (vc->mlx.pixely)) + (vc->mlx.pixely))
-		{
-			mlx_pixel_put(vc->mlx.mlx, vc->mlx.window, i, j, color);
-			j++;
-		}
-		i++;
-	}
-}
-
-void draw_minimap_background(t_vc *vc, int x, int y, int color)
-{
-	int width;
-	int height;
-	int	i;
-	int	j;
-
-	i = 0;
-	width = vc->mlx.pixelx * x;
-	height = vc->mlx.pixely * y;
-	while (i < height)
-	{	
-		j = 0;
-		while (j < width)
-		{
-			mlx_pixel_put(vc->mlx.mlx, vc->mlx.window, j, i, color);
-			j++;
-		}
-		i++;
-	}
-}
-
-
-void	drawminimap(t_vc *vc)
-{
-	int	i;
-	int	j;
-	int	color;
-
-	i = 0;
-	while (vc->map.matrix_ff[i])
-	{
-		j = 0;
-		while (vc->map.matrix_ff[i][j])
-		{
-			if (vc->map.matrix_ff[i][j])
-			{
-				color = get_color(vc->map.matrix_ff[i][j]);
-				draw_rectangle(vc, i, j, color);
-				draw_rectangle(vc, (vc->play.x / vc->mlx.pixelx), (vc->play.y / vc->mlx.pixely), PLAYERCOLOR);
-			}
-			j++;
-		}
-		i++;
-		draw_rectangle(vc, (vc->play.x / vc->mlx.pixelx), (vc->play.y / vc->mlx.pixely), PLAYERCOLOR);
-	}
-}
+// 	start_x = x * vc->mlx.pixelx;
+// 	start_y = y * vc->mlx.pixely;
+// 	end_x = start_x + vc->mlx.pixelx;
+// 	end_y = start_y + vc->mlx.pixely;
+// 	i = start_y;
+// 	while (i < end_y)
+// 	{
+// 		j = start_x;
+// 		while (j < end_x)
+// 		{
+// 			mlx_pixel_put(vc->mlx.mlx, vc->mlx.window, j, i, color);
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// }
 
 void	placeplayer(t_vc *vc)
 {
@@ -100,9 +56,9 @@ void	placeplayer(t_vc *vc)
 		{
 			if (vc->map.matrix[i][j] == 'P')
 			{
-				vc->play.x = ((i + 1) * vc->mlx.pixelx);
-				vc->play.y = ((j + 1) * (vc->mlx.pixely));
-				draw_rectangle(vc, vc->play.x, vc->play.y, PLAYERCOLOR);
+				vc->play.x = ((j + 1) * vc->mlx.pixelx);
+				vc->play.y = ((i + 1) * (vc->mlx.pixely));
+				return ;
 			}
 			j++;
 		}
