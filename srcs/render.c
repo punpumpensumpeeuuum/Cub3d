@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:23 by jomendes          #+#    #+#             */
-/*   Updated: 2024/12/10 01:13:36 by elemesmo         ###   ########.fr       */
+/*   Updated: 2024/12/13 14:06:18 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ void draw_rectangle(t_vc *vc, int h, int w, int color)
 	int i;
 	int j;
 
-	i = w * (vc->mlx.x / 80);
-	while (i < (w * (vc->mlx.x / 80)) + (vc->mlx.x / 80))
+	i = w * (X_SCREEN / 80);
+	while (i < (w * (X_SCREEN / 80)) + (X_SCREEN / 80))
 	{
-		j = h * (vc->mlx.y / 45);
-		while (j < (h * (vc->mlx.y / 45)) + (vc->mlx.y / 45))
+		j = h * (Y_SCREEN / 45);
+		while (j < (h * (Y_SCREEN / 45)) + (Y_SCREEN / 45))
 		{
 			mlx_pixel_put(vc->mlx.mlx, vc->mlx.window, i, j, color);
 			j++;
@@ -57,7 +57,7 @@ void	drawminimap(t_vc *vc)
 		j = 0;
 		while (vc->map.matrix_ff[i][j])
 		{
-			draw_rectangle(vc, (vc->play.x / (vc->mlx.x / 80)), (vc->play.y / (vc->mlx.y / 45)), PLAYERCOLOR);
+			draw_rectangle(vc, (vc->player.pos_x / (vc->mlx.x / 80)), (vc->player.pos_y / (vc->mlx.y / 45)), PLAYERCOLOR);
 			color = get_color(vc->map.matrix_ff[i][j]);
 			draw_rectangle(vc, i, j, color);
 			j++;
@@ -77,11 +77,16 @@ void	placeplayer(t_vc *vc)
 		j = 0;
 		while (j < vc->map.matrix[i][j])
 		{
-			if (vc->map.matrix[i][j] == 'P')
+			if (vc->map.matrix[i][j] == 'N' || vc->map.matrix[i][j] == 'S'
+			||vc->map.matrix[i][j] == 'E' || vc->map.matrix[i][j] == 'O')
 			{
-				vc->play.x = ((i + 1) * (vc->mlx.x / 80));
-				vc->play.y = ((j + 1) * (vc->mlx.y / 45));
-				draw_rectangle(vc, vc->play.x, vc->play.y, PLAYERCOLOR);
+				vc->player.facing = 270;
+
+				vc->player.pos_x = j;
+				vc->player.pos_y = i;
+				//vc->player.pos_x = ((i + 1) * (vc->mlx.x / 80));
+				//vc->player.pos_y = ((j + 1) * (vc->mlx.y / 45));
+				draw_rectangle(vc, vc->player.pos_x, vc->player.pos_y, PLAYERCOLOR);
 			}
 			j++;
 		}

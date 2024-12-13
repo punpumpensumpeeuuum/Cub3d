@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elemesmo <elemesmo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:49:40 by elemesmo          #+#    #+#             */
-/*   Updated: 2024/12/06 16:28:49 by elemesmo         ###   ########.fr       */
+/*   Updated: 2024/12/13 11:48:16 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,10 @@ int	check_map_x(t_map *map, int y)
 	int	x;
 
 	x = 0;
-	while (map->matrix_ff[y][x])
-	{
-		if (!(map->matrix_ff[y][x] == 'w' && map->matrix_ff[y][x] == '1' &&
-		 (map->matrix_ff[y][x] == '\n')))
+	while (map->matrix[y][x])
+	{	
+		if (!(map->matrix[y][x] == ' ' || map->matrix[y][x] == '1' ||
+		map->matrix[y][x] == '\n'))
 			return (1);
 		x++;
 	}
@@ -147,7 +147,7 @@ int	check_0(t_map *map)
 			{
 				if (map->matrix_ff[y + 1][x] == 'w'
 				|| map->matrix_ff[y - 1][x] == 'w')
-					return (1);
+					return (1);	
 			}
 			x++;
 		}
@@ -160,7 +160,7 @@ int	check_map(t_map *map)
 {
 	if (!map->matrix_ff)
 		return (1);
-	if (check_map_x(map, 1) == 0 && check_map_x(map, map->y) == 0
+	if (check_map_x(map, 0) == 0 && check_map_x(map, map->y - 1) == 0
 	&& check_map_y(map) == 0 && check_0(map) == 0)
 		return (0);
 	return (1);
