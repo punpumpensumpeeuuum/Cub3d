@@ -55,7 +55,10 @@ void	dda_style(t_vc *vc)
 		printf("5\n");
 		x++;
 	}
-	mlx_put_image_to_window(vc->mlx.mlx, vc->mlx.window, vc->mlx.window, 0, 0);
+	printf("pointer = %p\n", vc->data.img_ptr);
+	printf("size y = %d, size x = %d\n", vc->data.img_size_y, vc->data.img_size_x);
+	vc->data = *vc->map_info.no_texture;
+	mlx_put_image_to_window(vc->mlx.mlx, vc->mlx.window, vc->data.img_ptr, vc->data.img_size_y, vc->data.img_size_x);
 }
 
 void	dda_step_calc(t_vc *vc)
@@ -105,10 +108,8 @@ void	dda_real_distance_calc(t_vc *vc)
 			vc->ray.side = 1;
 		}
 		if (vc->map.matrix[vc->ray.pos_y][vc->ray.pos_x] == '1')
-		{
-			printf("oi\n");
 			hit = 1;
-		}
+
 	}
 	if (vc->ray.side == 0)
 		vc->ray.real_size = (vc->ray.distance_x - vc->ray.delta_dist_x);
@@ -131,6 +132,10 @@ void	dda_side_selector(t_vc *vc, t_ray *ray, t_player *player, t_map_info *info)
 {
 	double	wall_x;
 
+	// printf("Address: %s\n", vc->map_info.no_texture->addr);
+	// printf("Address: %s\n", vc->map_info.so_texture->addr);
+	// printf("Address: %s\n", vc->map_info.we_texture->addr);
+	// printf("Address: %s\n", vc->map_info.so_texture->addr);
 	if (ray->side == 0)
 		wall_x = player->pos_y + ray->real_size * ray->direction_y;
 	else
@@ -151,37 +156,12 @@ void	dda_side_selector(t_vc *vc, t_ray *ray, t_player *player, t_map_info *info)
 		draw_walls(vc, ray, info->no_texture);
 }
 
-void	open_imgs(t_vc *vc)
-{
-	printf("Loading textures...\n");
-
-	printf("NO Texture Path: %s\n", vc->map_info.no);
-    printf("SO Texture Path: %s\n", vc->map_info.so);
-    printf("EA Texture Path: %s\n", vc->map_info.ea);
-    printf("WE Texture Path: %s\n", vc->map_info.we);
-	vc->map_info.no_texture->img_ptr = mlx_xpm_file_to_image(&vc->mlx.mlx, vc->map_info.no,
-            &vc->map_info.no_texture->img_size_x, &vc->map_info.no_texture->img_size_y);
-    vc->map_info.so_texture->addr = mlx_get_data_addr(&vc->map_info.so_texture->img_ptr,
-            &vc->map_info.so_texture->bits_per_pixel, &vc->map_info.so_texture->line_length,
-            &vc->map_info.so_texture->endian);
-	vc->map_info.so_texture->img_ptr = mlx_xpm_file_to_image(&vc->mlx.mlx, vc->map_info.so,
-            &vc->map_info.so_texture->img_size_x, &vc->map_info.so_texture->img_size_y);
-    vc->map_info.ea_texture->addr = mlx_get_data_addr(&vc->map_info.ea_texture->img_ptr,
-            &vc->map_info.ea_texture->bits_per_pixel, &vc->map_info.ea_texture->line_length,
-            &vc->map_info.ea_texture->endian);
-	vc->map_info.ea_texture->img_ptr = mlx_xpm_file_to_image(&vc->mlx.mlx, vc->map_info.ea,
-            &vc->map_info.ea_texture->img_size_x, &vc->map_info.ea_texture->img_size_y);
-    vc->map_info.we_texture->addr = mlx_get_data_addr(&vc->map_info.we_texture->img_ptr,
-            &vc->map_info.we_texture->bits_per_pixel, &vc->map_info.we_texture->line_length,
-            &vc->map_info.we_texture->endian);
-	vc->map_info.we_texture->img_ptr = mlx_xpm_file_to_image(&vc->mlx.mlx, vc->map_info.we,
-            &vc->map_info.we_texture->img_size_x, &vc->map_info.we_texture->img_size_y);
-}
-
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
+	if (x < 0 || x >= data->img_size_x || y < 0 || y >= data->img_size_y)
+        return;
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
 }
@@ -212,6 +192,8 @@ void	draw_walls(t_vc *vc, t_ray *ray, t_data *texture)
 	{
 		texture_y = (int)texture_pos & (texture->img_size_y - 1);
 		color = get_raycolor(ray->x_texture, texture_y, texture);
+		// printf("ray id = %d\n", ray->id);
+		// printf("y = %d\n", y);
 		my_mlx_pixel_put(texture, ray->id, y, color);
 		texture_pos += step;
 		y++;
@@ -232,13 +214,13 @@ void	draw_floor_ceiling(t_vc *vc, t_ray *ray)
 	y = 0;
 	while (y < ray->wall_start)
 	{
-		my_mlx_pixel_put(vc->data.img_ptr, ray->id, y, c_color);
+		my_mlx_pixel_put(&vc->data, ray->id, y, c_color);
 		y++;
 	}
 	y = ray->wall_end + 1;
 	while (y < Y_SCREEN)
 	{
-		my_mlx_pixel_put(vc->data.img_ptr, ray->id, y, c_color);
+		my_mlx_pixel_put(&vc->data, ray->id, y, c_color);
 		y++;
 	}
 }
