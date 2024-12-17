@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:19 by jomendes          #+#    #+#             */
-/*   Updated: 2024/12/16 18:35:23 by jomendes         ###   ########.fr       */
+/*   Updated: 2024/12/17 16:51:06 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,8 @@ void load_texture(t_data *texture, void *mlx, char *file_path)
         printf("Error: failed to get texture address: %s\n", file_path);
         exit(1);
 	}
+	dprintf(2, "adrr = %p\n", texture->addr);
+	dprintf(2, "img = %p\n", texture->img_ptr);
     printf("Texture loaded successfully from %s Size: %dx%d\n", file_path, texture->img_size_x, texture->img_size_y);
 }
 
@@ -162,11 +164,16 @@ void	alloc_textures(t_vc *vc)
 	vc->map_info.so_texture = malloc(sizeof(t_data));
 	vc->map_info.ea_texture = malloc(sizeof(t_data));
 	vc->map_info.we_texture = malloc(sizeof(t_data));
+	vc->canva = malloc(sizeof(t_data));
 	if (!vc->map_info.no_texture || !vc->map_info.so_texture || !vc->map_info.ea_texture || !vc->map_info.we_texture)
 	{
 	    printf("Error: failed to allocate memory for textures.\n");
 	    exit(1);
 	}
+	vc->canva->img_ptr = mlx_new_image(vc->mlx.mlx, X_SCREEN, Y_SCREEN);
+	vc->canva->addr = mlx_get_data_addr(vc->canva->img_ptr, &vc->canva->bits_per_pixel, &vc->canva->line_length, &vc->canva->endian);
+    vc->canva->img_size_x = X_SCREEN;
+    vc->canva->img_size_y = Y_SCREEN;
 	load_texture(vc->map_info.no_texture, vc->mlx.mlx, vc->map_info.no);
 	load_texture(vc->map_info.so_texture, vc->mlx.mlx, vc->map_info.so);
 	load_texture(vc->map_info.ea_texture, vc->mlx.mlx, vc->map_info.ea);
@@ -288,8 +295,10 @@ void init(char *file)
     get_width(&vc->map);
     second_map(&vc->map);
     if (check_map(&vc->map) == 1)
+	{
+		dprintf(2, "HALLOHA\n");
         exit(1);
-
+	}
     i = -1;
     while (vc->map.matrix_ff[++i])
     {
@@ -300,13 +309,12 @@ void init(char *file)
     placeplayer(vc);
     alloc_textures1(vc);
     alloc_textures(vc);
-    mlx_do_key_autorepeatoff(vc->mlx.mlx);
-    //open_imgs(vc);
 	dda_style(vc);
     mlx_hook(vc->mlx.window, 17, 1L << 17, closegame, vc);
     mlx_hook(vc->mlx.window, 2, 1L << 0, keypress, vc);
     mlx_hook(vc->mlx.window, 3, 1L << 1, keyunpress, vc);
     mlx_loop_hook(vc->mlx.mlx, andar, vc);
+	mlx_do_key_autorepeatoff(vc->mlx.mlx);
     mlx_loop(vc->mlx.mlx);
 }
 

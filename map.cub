@@ -1,7 +1,7 @@
-NO ./Beer.xpm
-SO ./Beer.xpm
-WE ./Beer.xpm
-EA ./Beer.xpm
+NO ./Security.xpm
+SO ./Security.xpm
+WE ./Security.xpm
+EA ./Security.xpm
 
 F 220,100,0
 C 225,30,0

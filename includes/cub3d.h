@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 15:43:22 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/12/16 15:54:02 by jomendes         ###   ########.fr       */
+/*   Updated: 2024/12/17 16:44:40 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"
 # include "../get_next_line/get_next_line.h"
-# define PI 3.1416
+# define PI 3.14159265358979323846
 # define PLAYERCOLOR 0xff0000
 # define FOV 720
 # define X_SCREEN 768
@@ -43,7 +43,6 @@ typedef struct s_rgb
     int				g;
     int				b;
 }	t_rgb;
-
 
 typedef struct s_data
 {
@@ -139,6 +138,7 @@ typedef struct s_voidcollector
 	t_map_info		map_info;
 	t_ray			ray;
 	t_data			data;
+	t_data			*canva;
 }	t_vc;
 
 int		check_args(int ac, char **av);
@@ -171,8 +171,6 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int		get_raycolor(int tex_x, int tex_y, t_data *data);
 void	draw_walls(t_vc *vc, t_ray *ray, t_data *texture);
 void	draw_floor_ceiling(t_vc *vc, t_ray *ray);
-void	open_imgs(t_vc *vc);
-
 float	degree_to_radian(int degree);
 
 #endif
