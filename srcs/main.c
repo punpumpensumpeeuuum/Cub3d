@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:19 by jomendes          #+#    #+#             */
-/*   Updated: 2024/12/17 16:51:06 by jomendes         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:51:42 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,89 +185,124 @@ float	degree_to_radian(int degree)
 	return ((float)degree * (PI / 180.0f));
 }
 
-void init_vc(t_vc *vc)
+// void init_vc(t_vc *vc)
+// {
+//     // Initialize mlx
+//     vc->mlx.window = NULL;
+//     vc->mlx.x = 0;
+//     vc->mlx.y = 0;
+//     vc->mlx.mlx = NULL;
+
+//     // Initialize player
+//     vc->player.facing = 0;
+//     vc->player.w = 0;
+//     vc->player.a = 0;
+//     vc->player.s = 0;
+//     vc->player.d = 0;
+//     vc->player.pos_x = 0;
+//     vc->player.pos_y = 0;
+//     vc->player.plane_x = 0.0;
+//     vc->player.plane_y = 0.0;
+//     vc->player.direction_x = 0.0;
+//     vc->player.direction_y = 0.0;
+//     vc->player.camera_x = 0.0;
+//     vc->player.camera_y = 0.0;
+
+//     // Initialize minimap
+//     vc->minimap.x = 0;
+//     vc->minimap.y = 0;
+//     vc->minimap.onoff = 0;
+
+//     // Initialize map
+//     vc->map.file = NULL;
+//     vc->map.matrix = NULL;
+//     vc->map.matrix_ff = NULL;
+//     vc->map.index = 0;
+//     vc->map.file_heigth = 0;
+  
+//     vc->map.x = 0;
+//     vc->map.y = 0;
+
+//     // Initialize map_info
+//     vc->map_info.no = NULL;
+//     vc->map_info.so = NULL;
+//     vc->map_info.ea = NULL;
+//     vc->map_info.we = NULL;
+//     vc->map_info.no_texture = NULL;
+//     vc->map_info.so_texture = NULL;
+//     vc->map_info.we_texture = NULL;
+//     vc->map_info.ea_texture = NULL; 
+// 	vc->map_info.floor = NULL;
+//     vc->map_info.ceiling = NULL;
+//     vc->map_info.ceiling_color.r = 0;
+//     vc->map_info.ceiling_color.g = 0;
+//     vc->map_info.ceiling_color.b = 0;
+//     vc->map_info.floor_color.r = 0;
+//     vc->map_info.floor_color.g = 0;
+//     vc->map_info.floor_color.b = 0;
+
+//     // Initialize ray
+//     vc->ray.id = 0;
+//     vc->ray.pos_x = 0;
+//     vc->ray.pos_y = 0;
+//     vc->ray.direction_x = 0.0;
+//     vc->ray.direction_y = 0.0;
+//     vc->ray.delta_dist_x = 0.0;
+//     vc->ray.delta_dist_y = 0.0;
+//     vc->ray.distance_x = 0.0;
+//     vc->ray.distance_y = 0.0;
+//     vc->ray.real_size = 0.0;
+//     vc->ray.side = 0;
+//     vc->ray.line_height = 0;
+//     vc->ray.wall_start = 0;
+//     vc->ray.wall_end = 0;
+//     vc->ray.step_x = 0;
+//     vc->ray.step_y = 0;
+//     vc->ray.x_texture = 0;
+//     vc->ray.y_texture = 0;
+
+//     // Initialize data (assuming it will hold texture data or some other image data)
+//     vc->data.img_ptr = NULL;
+//     vc->data.addr = NULL;
+//     vc->data.bits_per_pixel = 0;
+//     vc->data.line_length = 0;
+//     vc->data.endian = 0;
+//     vc->data.img_size_x = 0;
+//     vc->data.img_size_y = 0;
+// }
+
+int	get_floor_color(t_map_info *info)
 {
-    // Initialize mlx
-    vc->mlx.window = NULL;
-    vc->mlx.x = 0;
-    vc->mlx.y = 0;
-    vc->mlx.mlx = NULL;
+	char **floor;
+	int	color;
+	
+	floor = ft_split((info->floor + 2), ',');
+	info->floor_color.r = ft_atoi(floor[0]);
+	info->floor_color.g = ft_atoi(floor[1]);
+	info->floor_color.b =  ft_atoi(floor[2]);
+	if (info->floor_color.r < 0 || info->floor_color.r > 255 ||
+    info->floor_color.g < 0 || info->floor_color.g > 255 ||
+    info->floor_color.b < 0 || info->floor_color.b > 255)
+		return (1);
+	color = (info->floor_color.r << 16 | info->floor_color.g << 8 | info->floor_color.b);
+	return (color);
+}
 
-    // Initialize player
-    vc->player.facing = 0;
-    vc->player.w = 0;
-    vc->player.a = 0;
-    vc->player.s = 0;
-    vc->player.d = 0;
-    vc->player.pos_x = 0;
-    vc->player.pos_y = 0;
-    vc->player.plane_x = 0.0;
-    vc->player.plane_y = 0.0;
-    vc->player.direction_x = 0.0;
-    vc->player.direction_y = 0.0;
-    vc->player.camera_x = 0.0;
-    vc->player.camera_y = 0.0;
-
-    // Initialize minimap
-    vc->minimap.x = 0;
-    vc->minimap.y = 0;
-    vc->minimap.onoff = 0;
-
-    // Initialize map
-    vc->map.file = NULL;
-    vc->map.matrix = NULL;
-    vc->map.matrix_ff = NULL;
-    vc->map.index = 0;
-    vc->map.file_heigth = 0;
-    vc->map.floor = NULL;
-    vc->map.ceiling = NULL;
-    vc->map.x = 0;
-    vc->map.y = 0;
-
-    // Initialize map_info
-    vc->map_info.no = NULL;
-    vc->map_info.so = NULL;
-    vc->map_info.ea = NULL;
-    vc->map_info.we = NULL;
-    vc->map_info.no_texture = NULL;
-    vc->map_info.so_texture = NULL;
-    vc->map_info.we_texture = NULL;
-    vc->map_info.ea_texture = NULL;
-    vc->map_info.ceiling_color.r = 0;
-    vc->map_info.ceiling_color.g = 0;
-    vc->map_info.ceiling_color.b = 0;
-    vc->map_info.floor_color.r = 0;
-    vc->map_info.floor_color.g = 0;
-    vc->map_info.floor_color.b = 0;
-
-    // Initialize ray
-    vc->ray.id = 0;
-    vc->ray.pos_x = 0;
-    vc->ray.pos_y = 0;
-    vc->ray.direction_x = 0.0;
-    vc->ray.direction_y = 0.0;
-    vc->ray.delta_dist_x = 0.0;
-    vc->ray.delta_dist_y = 0.0;
-    vc->ray.distance_x = 0.0;
-    vc->ray.distance_y = 0.0;
-    vc->ray.real_size = 0.0;
-    vc->ray.side = 0;
-    vc->ray.line_height = 0;
-    vc->ray.wall_start = 0;
-    vc->ray.wall_end = 0;
-    vc->ray.step_x = 0;
-    vc->ray.step_y = 0;
-    vc->ray.x_texture = 0;
-    vc->ray.y_texture = 0;
-
-    // Initialize data (assuming it will hold texture data or some other image data)
-    vc->data.img_ptr = NULL;
-    vc->data.addr = NULL;
-    vc->data.bits_per_pixel = 0;
-    vc->data.line_length = 0;
-    vc->data.endian = 0;
-    vc->data.img_size_x = 0;
-    vc->data.img_size_y = 0;
+int	get_ceiling_color(t_map_info *info)
+{
+	char **ceiling;
+	int	color;
+	
+	ceiling = ft_split((info->ceiling + 2), ',');
+	info->ceiling_color.r = ft_atoi(ceiling[0]);
+	info->ceiling_color.g = ft_atoi(ceiling[1]);
+	info->ceiling_color.b =  ft_atoi(ceiling[2]);
+	if (info->ceiling_color.r < 0 || info->ceiling_color.r > 255 ||
+    info->ceiling_color.g < 0 || info->ceiling_color.g > 255 ||
+    info->ceiling_color.b < 0 || info->ceiling_color.b > 255)
+		return (1);
+	color = (info->ceiling_color.r << 16 | info->ceiling_color.g << 8 | info->ceiling_color.b);
+	return (color);
 }
 
 void init(char *file)
@@ -281,11 +316,10 @@ void init(char *file)
 	vc->mlx.y = Y_SCREEN;
     vc->map.file = get_file(file, &vc->map);
     vc->map.matrix = get_map(&vc->map);
-    if (get_floor(&vc->map) == 0)
-        printf("floor = %s\n", vc->map.floor);
-    if (get_ceiling(&vc->map) == 0)
-        printf("ceiling = %s\n", vc->map.ceiling);
-
+    if (get_floor(&vc->map, &vc->map_info) == 0)
+        printf("floor = %s\n", vc->map_info.floor);
+    if (get_ceiling(&vc->map, &vc->map_info) == 0)
+        printf("ceiling = %s\n", vc->map_info.ceiling);
     int i = -1;
     while (vc->map.file[++i])
     {
@@ -299,17 +333,34 @@ void init(char *file)
 		dprintf(2, "HALLOHA\n");
         exit(1);
 	}
-    i = -1;
-    while (vc->map.matrix_ff[++i])
-    {
-        printf("%s", vc->map.matrix_ff[i]);
-    }
+	i = -1;
+	while (vc->map.matrix_ff[++i])
+	{
+		printf("%s", vc->map.matrix_ff[i]);
+	}
     vc->mlx.mlx = mlx_init();
     vc->mlx.window = mlx_new_window(vc->mlx.mlx, vc->mlx.x, vc->mlx.y, "cub3d");
     placeplayer(vc);
     alloc_textures1(vc);
     alloc_textures(vc);
+	if (get_ceiling_color(&vc->map_info) != 0)
+	{
+		ft_putstr_fd("Invalid RGB on ceiling\n", 2);
+		return ;
+	}
+	else if (get_floor_color(&vc->map_info) != 0)
+	{
+		ft_putstr_fd("Invalid RGB on floor\n", 2);
+		return ;
+	}
 	dda_style(vc);
+	printf("\n");
+	printf("cealing r = %d\n", vc->map_info.ceiling_color.r);
+	printf("cealing g = %d\n", vc->map_info.ceiling_color.g);
+	printf("cealing b = %d\n", vc->map_info.ceiling_color.b);
+	printf("floor r = %d\n", vc->map_info.floor_color.r);
+	printf("floor g = %d\n", vc->map_info.floor_color.g);
+	printf("floor b = %d\n", vc->map_info.floor_color.b);
     mlx_hook(vc->mlx.window, 17, 1L << 17, closegame, vc);
     mlx_hook(vc->mlx.window, 2, 1L << 0, keypress, vc);
     mlx_hook(vc->mlx.window, 3, 1L << 1, keyunpress, vc);

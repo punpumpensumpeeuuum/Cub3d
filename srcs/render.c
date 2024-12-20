@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:23 by jomendes          #+#    #+#             */
-/*   Updated: 2024/12/13 14:06:18 by jomendes         ###   ########.fr       */
+/*   Updated: 2024/12/20 13:47:16 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,23 @@ void	placeplayer(t_vc *vc)
 		j = 0;
 		while (j < vc->map.matrix[i][j])
 		{
-			if (vc->map.matrix[i][j] == 'N' || vc->map.matrix[i][j] == 'S'
-			||vc->map.matrix[i][j] == 'E' || vc->map.matrix[i][j] == 'O')
+			if (vc->map.matrix[i][j] == 'N' || vc->map.matrix[i][j] == 'O')
 			{
 				vc->player.facing = 270;
-
 				vc->player.pos_x = j;
 				vc->player.pos_y = i;
+				vc->player.direction_x = 0.00;
+				vc->player.direction_y = -1.00;
 				//vc->player.pos_x = ((i + 1) * (vc->mlx.x / 80));
 				//vc->player.pos_y = ((j + 1) * (vc->mlx.y / 45));
+				draw_rectangle(vc, vc->player.pos_x, vc->player.pos_y, PLAYERCOLOR);
+			}
+			else if (vc->map.matrix[i][j] == 'S')
+			{
+				vc->player.pos_x = j;
+				vc->player.pos_y = i;
+				vc->player.direction_x = 0.00;
+				vc->player.direction_y = 1.00;
 				draw_rectangle(vc, vc->player.pos_x, vc->player.pos_y, PLAYERCOLOR);
 			}
 			j++;

@@ -19,12 +19,13 @@ void	dda_style(t_vc *vc)
 	double	ray_camera;
 
 	x = 0;
-	vc->player.direction_x = cos(degree_to_radian(vc->player.facing));
-	vc->player.direction_y = sin(degree_to_radian(vc->player.facing));
+	// vc->player.direction_x = cos(degree_to_radian(vc->player.facing));
+	// vc->player.direction_y = sin(degree_to_radian(vc->player.facing));
+	printf("dir x = %f, dir y = %f\n", vc->player.direction_x, vc->player.direction_y);
 	while (x < X_SCREEN)
 	{
-		vc->player.plane_x = -0.66;
-    	vc->player.plane_y = 0.66;
+		vc->player.plane_x = 0.66;
+    	vc->player.plane_y = 0.00;
 		ray_camera = (2 * x) / (double)X_SCREEN - 1;
 		vc->ray.id = x;
 		vc->ray.pos_x = vc->player.pos_x;
@@ -45,7 +46,6 @@ void	dda_style(t_vc *vc)
 		dda_side_selector(vc, &vc->ray, &vc->player, &vc->map_info);
 		x++;
 	}
-	printf("ptr = %p\n" , vc->canva->addr);
 	mlx_put_image_to_window(vc->mlx.mlx, vc->mlx.window, vc->canva->img_ptr, 0, 0);
 }
 
@@ -178,12 +178,11 @@ void	draw_walls(t_vc *vc, t_ray *ray, t_data *texture)
 	texture_pos = (ray->wall_start - Y_SCREEN / 2
 			+ ray->line_height / 2) * step;
 	y = ray->wall_start;
-	dprintf(2, "id -> %d\n", vc->ray.id);
+
 	while (y < ray->wall_end)
 	{
 		texture_y = (int)texture_pos & (texture->img_size_y - 1);
 		texture_pos += step;
-		//color = get_raycolor(ray->x_texture, texture_y, texture);
 		color = my_pixel_get(texture, ray->id, y);
 		my_mlx_pixel_put(vc->canva, ray->id, y, color);
 		y++;
@@ -193,24 +192,18 @@ void	draw_walls(t_vc *vc, t_ray *ray, t_data *texture)
 
 void	draw_floor_ceiling(t_vc *vc, t_ray *ray)
 {
-	int	c_color;
-	int	f_color;
 	int	y;
 
-	//c_color = create_rgb(vc->map_info.ceiling_color);
-	//f_color = create_rgb(vc->map_info.ceiling_color);
-	c_color = 0xFFFFFF;
-	f_color = 0x000000;
 	y = 0;
 	while (y < ray->wall_start)
 	{
-		my_mlx_pixel_put(vc->canva, ray->id, y, c_color);
+		my_mlx_pixel_put(vc->canva, ray->id, y, get_ceiling_color(&vc->map_info));
 		y++;
 	}
 	y = ray->wall_end + 1;
 	while (y < Y_SCREEN)
 	{
-		my_mlx_pixel_put(vc->canva, ray->id, y, c_color);
+		my_mlx_pixel_put(vc->canva, ray->id, y, get_floor_color(&vc->map_info));
 		y++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 15:43:22 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/12/17 16:44:40 by jomendes         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:24:50 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # define PI 3.14159265358979323846
 # define PLAYERCOLOR 0xff0000
 # define FOV 720
-# define X_SCREEN 768
-# define Y_SCREEN 398
+# define X_SCREEN 3840 //768 3840
+# define Y_SCREEN 1990 //398 1990
 
 typedef struct s_minimap
 {
@@ -62,8 +62,7 @@ typedef struct s_map
 	char			**matrix_ff;
 	int				index;
 	int				file_heigth;
-	char			*floor;
-	char			*ceiling;
+	
 	int				x;
 	int				y;
 }		t_map;
@@ -121,6 +120,8 @@ typedef struct s_map_info
 	char			*so;
 	char			*ea;
 	char			*we;
+	char			*floor;
+	char			*ceiling;
 	t_data			*no_texture;
 	t_data			*so_texture;
 	t_data			*we_texture;
@@ -157,9 +158,11 @@ int		check_map(t_map *map);
 int		check_0(t_map *map);
 void	map_index(t_map *map);
 void	placeplayer(t_vc *vc);
-int		get_floor(t_map *map);
-int		get_ceiling(t_map *map);
-void	player_pos(t_map *map, t_player *player);
+int		get_floor(t_map *map, t_map_info *info);
+int		get_ceiling(t_map *map, t_map_info *info);
+void	player_pos(t_map *map, t_vc *vc);
+int		get_floor_color(t_map_info *info);
+int		get_ceiling_color(t_map_info *info);
 
 // raycasting
 void	dda_style(t_vc *vc);
