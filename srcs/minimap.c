@@ -6,44 +6,25 @@
 /*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 12:27:25 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/12/12 15:38:00 by dinda-si         ###   ########.fr       */
+/*   Updated: 2024/12/20 17:50:38 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-int	get_color(char c)
+void draw_rectangle(t_vc *vc, char c, int i, int j)
 {
-	if (c == '0')
-		return (0x000000);
+	printf("Pixel Size: %d x %d\n", vc->mlx.pixelx, vc->mlx.pixely);
 	if (c == '1')
-		return (0xFFFFFF);
-	return (0x000000);
-}
-
-void draw_rectangle(t_vc *vc, int h, int w, int color)
-{
-	int i;
-	int j;
-
-	i = w * vc->mlx.pixelx;
-	while (i < (w * vc->mlx.pixelx) + vc->mlx.pixelx)
-	{
-		j = h * (vc->mlx.pixely);
-		while (j < (h * (vc->mlx.pixely)) + (vc->mlx.pixely))
-		{
-			mlx_pixel_put(vc->mlx.mlx, vc->mlx.window, i, j, color);
-			j++;
-		}
-		i++;
-	}
+		mlx_put_image_to_window(vc->mlx.mlx, vc->mlx.window, vc->minimap.wall, j * 16, i * 16);
+	else
+		mlx_put_image_to_window(vc->mlx.mlx, vc->mlx.window, vc->minimap.floor,j * 16, i * 16);
 }
 
 void	drawminimap(t_vc *vc)
 {
 	int	i;
 	int	j;
-	int	color;
 
 	i = 0;
 	while (vc->map.matrix_ff[i])
@@ -53,13 +34,11 @@ void	drawminimap(t_vc *vc)
 		{
 			if (vc->map.matrix_ff[i][j])
 			{
-				color = get_color(vc->map.matrix_ff[i][j]);
-				draw_rectangle(vc, i, j, color);
-				draw_player(vc);
+				draw_rectangle(vc, vc->map.matrix_ff[i][j], i, j);
+				mlx_put_image_to_window(vc->mlx.mlx, vc->mlx.window, vc->minimap.player, vc->player.pos_x , vc->player.pos_y);
 			}
 			j++;
 		}
-		draw_player(vc);
 		i++;
 	}
 }
