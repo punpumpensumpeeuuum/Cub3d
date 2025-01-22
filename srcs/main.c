@@ -65,10 +65,11 @@ int	keyunpress(int keycode, t_vc *vc)
 void	movemnt(t_vc *vc)
 {
 	printf("%d\n", vc->player.pos_x);
-printf("%d\n", vc->player.pos_y);
+	printf("%d\n", vc->player.pos_y);
 	if (vc->player.w == 1 && vc->map.matrix[((vc->player.pos_y - 1) / 16) - 1][((vc->player.pos_x - 1) / \
 		16)] != '1' && vc->map.matrix[((vc->player.pos_y - 1) / 16) - 1][((vc->player.pos_x - 14) / 16)] != '1')
 		vc->player.pos_y--;
+		//vc->player.pos_y += vc->player.direction_y * MOVE_SPEED;
 	if (vc->player.a == 1 && vc->map.matrix[((vc->player.pos_y + 1) / 16) - 1][((vc->player.pos_x - 1) / \
 		16) - 1] != '1' && vc->map.matrix[((vc->player.pos_y + 14) /	16) - 1][((vc->player.pos_x - 1) / 16) - 1] != '1')
 		vc->player.pos_x--;
@@ -80,9 +81,30 @@ printf("%d\n", vc->player.pos_y);
 		vc->player.pos_y++;
 }
 
+void	my_img_clear(t_data data)
+{
+	int	j;
+	int	i;
+
+	j = 0;
+	while (j < Y_SCREEN)
+	{
+		i = 0;
+		while (i < X_SCREEN)
+		{
+			my_mlx_pixel_put(&data, i, j, 0x000000);
+			i++;
+		}
+		j++;
+	}
+}
+
 int andar(t_vc *vc)
 {
+	printf("oi\n");
 	movemnt(vc);
+	my_img_clear(*vc->canva);
+	dda_style(vc);
 	// mlx_clear_window(vc->mlx.mlx, vc->mlx.window);
 	if (vc->minimap.onoff == 1)
 		drawminimap(vc);
@@ -165,11 +187,6 @@ void	alloc_textures(t_vc *vc)
 	load_texture(vc->map_info.so_texture, vc->mlx.mlx, vc->map_info.so);
 	load_texture(vc->map_info.ea_texture, vc->mlx.mlx, vc->map_info.ea);
 	load_texture(vc->map_info.we_texture, vc->mlx.mlx, vc->map_info.we);
-}
-
-float	degree_to_radian(int degree)
-{
-	return ((float)degree * (PI / 180.0f));
 }
 
 int	get_floor_color(t_map_info *info)
@@ -257,7 +274,6 @@ void init(char *file)
 		ft_putstr_fd("Invalid RGB on floor\n", 2);
 		return ;
 	}
-	dda_style(vc);
 	printf("\n");
 	printf("cealing r = %d\n", vc->map_info.ceiling_color.r);
 	printf("cealing g = %d\n", vc->map_info.ceiling_color.g);

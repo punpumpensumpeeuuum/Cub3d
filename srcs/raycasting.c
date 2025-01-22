@@ -19,8 +19,6 @@ void	dda_style(t_vc *vc)
 	double	ray_camera;
 
 	x = 0;
-	// vc->player.direction_x = cos(degree_to_radian(vc->player.facing));
-	// vc->player.direction_y = sin(degree_to_radian(vc->player.facing));
 	printf("dir x = %f, dir y = %f\n", vc->player.direction_x, vc->player.direction_y);
 	while (x < X_SCREEN)
 	{
@@ -28,8 +26,9 @@ void	dda_style(t_vc *vc)
     	vc->player.plane_y = 0.00;
 		ray_camera = (2 * x) / (double)X_SCREEN - 1;
 		vc->ray.id = x;
-		vc->ray.pos_x = vc->player.grid_x;
-		vc->ray.pos_y = vc->player.grid_y;
+		printf("dass\n");
+		vc->ray.pos_x = vc->player.pos_x;
+		vc->ray.pos_y = vc->player.pos_y;
 		vc->ray.direction_x = vc->player.direction_x + vc->player.plane_x * ray_camera;
 		vc->ray.direction_y = vc->player.direction_y + vc->player.plane_y * ray_camera;
 		if (vc->ray.direction_x == 0)
@@ -41,9 +40,13 @@ void	dda_style(t_vc *vc)
 		else
 			vc->ray.delta_dist_y = fabs(1 / vc->ray.direction_y);
 		dda_step_calc(vc);
+		printf("dass1\n");
 		dda_real_distance_calc(vc);
+		printf("dass2\n");
 		dda_wall_height(&vc->ray);
+		printf("dass3\n");
 		dda_side_selector(vc, &vc->ray, &vc->player, &vc->map_info);
+		printf("dass4\n");
 		x++;
 	}
 	mlx_put_image_to_window(vc->mlx.mlx, vc->mlx.window, vc->canva->img_ptr, 0, 0);
@@ -54,24 +57,24 @@ void	dda_step_calc(t_vc *vc)
 	if (vc->ray.direction_x < 0)
 	{
 		vc->ray.step_x = -1;
-		vc->ray.distance_x = (vc->player.grid_x - vc->ray.pos_x)
+		vc->ray.distance_x = (vc->player.pos_x - vc->ray.pos_x)
 			* vc->ray.delta_dist_x;
 	}
 	else
 	{
 		vc->ray.step_x = 1;
-		vc->ray.distance_x = (vc->ray.pos_x + 1.0 - vc->player.grid_x)
+		vc->ray.distance_x = (vc->ray.pos_x + 1.0 - vc->player.pos_x)
 			* vc->ray.delta_dist_x;
 	}
 	if (vc->ray.direction_y < 0)
 	{
 		vc->ray.step_y = -1;
-		vc->ray.distance_y = (vc->player.grid_y - vc->ray.pos_y) * vc->ray.delta_dist_y;
+		vc->ray.distance_y = (vc->player.pos_y - vc->ray.pos_y) * vc->ray.delta_dist_y;
 	}
 	else
 	{
 		vc->ray.step_y = 1;
-		vc->ray.distance_y = (vc->ray.pos_y + 1.0 - vc->player.grid_y)
+		vc->ray.distance_y = (vc->ray.pos_y + 1.0 - vc->player.pos_y)
 			* vc->ray.delta_dist_y;
 	}
 }
@@ -95,7 +98,7 @@ void	dda_real_distance_calc(t_vc *vc)
 			vc->ray.pos_y += vc->ray.step_y;
 			vc->ray.side = 1;
 		}
-		if (vc->map.matrix[vc->ray.pos_y][vc->ray.pos_x] == '1')
+		if (vc->map.matrix[(vc->ray.pos_y / 16) - 1][(vc->ray.pos_x / 16) -] == '1')
 			hit = 1;
 
 	}
@@ -170,7 +173,7 @@ void	draw_walls(t_vc *vc, t_ray *ray, t_data *texture)
 {
 	double	step;
 	double	texture_pos;
-	int		texture_y;
+
 	int		color;
 	int		y;
 
@@ -181,7 +184,8 @@ void	draw_walls(t_vc *vc, t_ray *ray, t_data *texture)
 
 	while (y < ray->wall_end)
 	{
-		texture_y = (int)texture_pos & (texture->img_size_y - 1);
+		//int		texture_y;
+		//texture_y = (int)texture_pos & (texture->img_size_y - 1);
 		texture_pos += step;
 		color = my_pixel_get(texture, ray->id, y);
 		my_mlx_pixel_put(vc->canva, ray->id, y, color);

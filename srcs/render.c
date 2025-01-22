@@ -30,6 +30,7 @@ void	placeplayer(t_vc *vc)
 				vc->player.facing = 270;
 				vc->player.pos_x = ((j + 1) * vc->mlx.pixelx);
 				vc->player.pos_y = ((i + 1) * (vc->mlx.pixely));
+				vc->player.angle = 270 * (PI / 180);
 				vc->player.direction_x = 0.00;
 				vc->player.direction_y = -1.00;
 			}
@@ -39,8 +40,29 @@ void	placeplayer(t_vc *vc)
 				vc->player.grid_y = i;		
 				vc->player.pos_x = ((j + 1) * vc->mlx.pixelx);
 				vc->player.pos_y = ((i + 1) * (vc->mlx.pixely));
+				vc->player.angle = 90 * (PI / 180);
 				vc->player.direction_x = 0.00;
 				vc->player.direction_y = 1.00;
+			}
+			if (vc->map.matrix[i][j] == 'E')
+			{
+				vc->player.grid_x = j;
+				vc->player.grid_y = i;		
+				vc->player.pos_x = ((j + 1) * vc->mlx.pixelx);
+				vc->player.pos_y = ((i + 1) * (vc->mlx.pixely));
+				vc->player.angle = 0 * (PI / 180);
+				vc->player.direction_x = 1.00;
+				vc->player.direction_y = 0.00;
+			}
+			if (vc->map.matrix[i][j] == 'W')
+			{
+				vc->player.grid_x = j;
+				vc->player.grid_y = i;		
+				vc->player.pos_x = ((j + 1) * vc->mlx.pixelx);
+				vc->player.pos_y = ((i + 1) * (vc->mlx.pixely));
+				vc->player.angle = 180 * (PI / 180);
+				vc->player.direction_x = -1.00;
+				vc->player.direction_y = 0.00;
 			}
 			j++;
 		}

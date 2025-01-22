@@ -27,8 +27,9 @@
 # define PI 3.14159265358979323846
 # define PLAYERCOLOR 0xff0000
 # define FOV 720
-# define X_SCREEN 3840 //768 3840
-# define Y_SCREEN 1990 //398 1990
+# define MOVE_SPEED 0.1
+# define X_SCREEN 768 //3840 3840
+# define Y_SCREEN 398 //1990 1990
 
 typedef struct s_minimap
 {
@@ -94,6 +95,7 @@ typedef struct s_player
 	double			plane_y;
 	double			direction_x;
 	double			direction_y;
+	double			angle;
 	double			camera_x;
 	double			camera_y;
 }	t_player;
@@ -180,6 +182,5 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int		get_raycolor(int tex_x, int tex_y, t_data *data);
 void	draw_walls(t_vc *vc, t_ray *ray, t_data *texture);
 void	draw_floor_ceiling(t_vc *vc, t_ray *ray);
-float	degree_to_radian(int degree);
 
 #endif
