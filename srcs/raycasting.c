@@ -98,7 +98,7 @@ void	dda_real_distance_calc(t_vc *vc)
 			vc->ray.pos_y += vc->ray.step_y;
 			vc->ray.side = 1;
 		}
-		if (vc->map.matrix[(vc->ray.pos_y / 16) - 1][(vc->ray.pos_x / 16) -] == '1')
+		if (vc->map.matrix[(vc->ray.pos_y / 16) - 1][(vc->ray.pos_x / 16) - 1] == '1')
 			hit = 1;
 
 	}
