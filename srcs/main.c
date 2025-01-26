@@ -202,9 +202,29 @@ int	rgb_def_check(char *str)
 		while (str[i] == ' ')
 			i++;
 		if (ft_isprint(str[i]))
+		{
+			ft_putstr_fd("Tryharder to break this\n", 2);
 			return (1);
+		}
+			
 	}
 	return (0);
+}
+
+int	coma_counter(char *str)
+{
+	int counter;
+	int i;
+
+	i = 0;
+	counter = 0;
+	while (str[i])
+	{
+		if (str[i] == ',')
+			counter++;
+		i++;
+	}
+	return (counter);
 }
 
 int	get_floor_color(t_map_info *info)
@@ -212,6 +232,11 @@ int	get_floor_color(t_map_info *info)
 	char **floor;
 	int	color;
 
+	if (coma_counter(info->floor) > 2)
+	{
+		ft_putstr_fd("Nasty evaluator\n", 2);
+		return (1);
+	}
 	floor = ft_split((info->floor + 2), ',');
 	if (!floor[0] || !floor[1] || !floor[2] || floor[3] || rgb_def_check(floor[0]) == 1
 	|| rgb_def_check(floor[1]) == 1 || rgb_def_check(floor[2]) == 1)
@@ -232,6 +257,11 @@ int	get_ceiling_color(t_map_info *info)
 	char **ceiling;
 	int	color;
 	
+	if (coma_counter(info->ceiling) > 2)
+	{
+		ft_putstr_fd("Nasty evaluator\n", 2);
+		return (1);
+	}
 	ceiling = ft_split((info->ceiling + 2), ',');
 	if (!ceiling[0] || !ceiling[1] || !ceiling[2] || ceiling[3] || rgb_def_check(ceiling[0]) == 1
 	|| rgb_def_check(ceiling[1]) == 1 || rgb_def_check(ceiling[2]) == 1)

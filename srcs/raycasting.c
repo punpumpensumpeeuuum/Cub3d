@@ -23,7 +23,7 @@ void	dda_style(t_vc *vc)
 	{
 		vc->player.plane_x = 0.66;
     	vc->player.plane_y = 0.00;
-		ray_camera = (2 * x) / (double)X_SCREEN - 1;
+		ray_camera = ((2 * x) / (double)X_SCREEN - 1);
 		vc->ray.id = x;
 		vc->ray.pos_x = vc->player.pos_x;
 		vc->ray.pos_y = vc->player.pos_y;

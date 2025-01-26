@@ -19,7 +19,7 @@ int	get_floor(t_map *map, t_map_info *info)
 	i = 0;
 	while (map->file[i])
 	{
-		if (ft_strncmp(map->file[i], "F", 1) == 0)
+		if (ft_strncmp(map->file[i], "F ", 2) == 0)
 		{
 			info->floor = map->file[i];
 			return (0);
@@ -37,7 +37,7 @@ int	get_ceiling(t_map *map, t_map_info *info)
 	i = 0;
 	while (map->file[i])
 	{
-		if (ft_strncmp(map->file[i], "C", 1) == 0)
+		if (ft_strncmp(map->file[i], "C ", 2) == 0)
 		{
 			info->ceiling = map->file[i];
 			return (0);

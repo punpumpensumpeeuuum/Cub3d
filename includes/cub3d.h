@@ -96,8 +96,6 @@ typedef struct s_player
 	double			direction_x;
 	double			direction_y;
 	double			angle;
-	double			camera_x;
-	double			camera_y;
 }	t_player;
 
 typedef struct s_ray
@@ -150,6 +148,7 @@ typedef struct s_voidcollector
 	t_data			*canva;
 }	t_vc;
 
+int		coma_counter(char *str);
 int		rgb_def_check(char *str);
 int		check_args(int ac, char **av);
 char    **get_map(t_map *map);
