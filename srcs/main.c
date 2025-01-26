@@ -64,8 +64,8 @@ int	keyunpress(int keycode, t_vc *vc)
 
 void	movemnt(t_vc *vc)
 {
-	printf("%d\n", vc->player.pos_x);
-	printf("%d\n", vc->player.pos_y);
+	//printf("%d\n", vc->player.pos_x);
+	//printf("%d\n", vc->player.pos_y);
 	if (vc->player.w == 1 && vc->map.matrix[((vc->player.pos_y - 1) / 16) - 1][((vc->player.pos_x - 1) / \
 		16)] != '1' && vc->map.matrix[((vc->player.pos_y - 1) / 16) - 1][((vc->player.pos_x - 14) / 16)] != '1')
 		vc->player.pos_y--;
@@ -101,7 +101,6 @@ void	my_img_clear(t_data data)
 
 int andar(t_vc *vc)
 {
-	printf("oi\n");
 	movemnt(vc);
 	my_img_clear(*vc->canva);
 	dda_style(vc);
@@ -189,12 +188,34 @@ void	alloc_textures(t_vc *vc)
 	load_texture(vc->map_info.we_texture, vc->mlx.mlx, vc->map_info.we);
 }
 
+int	rgb_def_check(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		while (str[i] == ' ')
+			i++;
+		while (ft_isdigit(str[i]))
+			i++;
+		while (str[i] == ' ')
+			i++;
+		if (ft_isprint(str[i]))
+			return (1);
+	}
+	return (0);
+}
+
 int	get_floor_color(t_map_info *info)
 {
 	char **floor;
 	int	color;
-	
+
 	floor = ft_split((info->floor + 2), ',');
+	if (!floor[0] || !floor[1] || !floor[2] || floor[3] || rgb_def_check(floor[0]) == 1
+	|| rgb_def_check(floor[1]) == 1 || rgb_def_check(floor[2]) == 1)
+		return (1);
 	info->floor_color.r = ft_atoi(floor[0]);
 	info->floor_color.g = ft_atoi(floor[1]);
 	info->floor_color.b =  ft_atoi(floor[2]);
@@ -212,6 +233,9 @@ int	get_ceiling_color(t_map_info *info)
 	int	color;
 	
 	ceiling = ft_split((info->ceiling + 2), ',');
+	if (!ceiling[0] || !ceiling[1] || !ceiling[2] || ceiling[3] || rgb_def_check(ceiling[0]) == 1
+	|| rgb_def_check(ceiling[1]) == 1 || rgb_def_check(ceiling[2]) == 1)
+		return (1);
 	info->ceiling_color.r = ft_atoi(ceiling[0]);
 	info->ceiling_color.g = ft_atoi(ceiling[1]);
 	info->ceiling_color.b =  ft_atoi(ceiling[2]);
@@ -234,10 +258,10 @@ void init(char *file)
 	vc->mlx.pixely = vc->mlx.y / 16;
     vc->map.file = get_file(file, &vc->map);
     vc->map.matrix = get_map(&vc->map);
-    if (get_floor(&vc->map, &vc->map_info) == 0)
-        printf("floor = %s\n", vc->map_info.floor);
-    if (get_ceiling(&vc->map, &vc->map_info) == 0)
-        printf("ceiling = %s\n", vc->map_info.ceiling);
+    if (get_floor(&vc->map, &vc->map_info) == 1)
+        exit(1);
+    if (get_ceiling(&vc->map, &vc->map_info) == 1)
+		exit(1);
     int i = -1;
     while (vc->map.file[++i])
     {

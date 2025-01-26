@@ -150,6 +150,7 @@ typedef struct s_voidcollector
 	t_data			*canva;
 }	t_vc;
 
+int		rgb_def_check(char *str);
 int		check_args(int ac, char **av);
 char    **get_map(t_map *map);
 void	error(char *str);

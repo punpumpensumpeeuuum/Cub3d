@@ -1,10 +1,14 @@
 NO srcs/xpm/parede.xpm
+
 SO srcs/xpm/parede.xpm
+
 WE srcs/xpm/parede.xpm
+
 EA srcs/xpm/parede.xpm
 
-C 12,180,255
-F 255,255,255
+F 255,255,132
+
+C  12 , 180 , 255
 
 1111111111111111111111111
 1000000000110000000000001

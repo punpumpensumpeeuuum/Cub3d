@@ -19,14 +19,12 @@ void	dda_style(t_vc *vc)
 	double	ray_camera;
 
 	x = 0;
-	printf("dir x = %f, dir y = %f\n", vc->player.direction_x, vc->player.direction_y);
 	while (x < X_SCREEN)
 	{
 		vc->player.plane_x = 0.66;
     	vc->player.plane_y = 0.00;
 		ray_camera = (2 * x) / (double)X_SCREEN - 1;
 		vc->ray.id = x;
-		printf("dass\n");
 		vc->ray.pos_x = vc->player.pos_x;
 		vc->ray.pos_y = vc->player.pos_y;
 		vc->ray.direction_x = vc->player.direction_x + vc->player.plane_x * ray_camera;
@@ -40,13 +38,9 @@ void	dda_style(t_vc *vc)
 		else
 			vc->ray.delta_dist_y = fabs(1 / vc->ray.direction_y);
 		dda_step_calc(vc);
-		printf("dass1\n");
 		dda_real_distance_calc(vc);
-		printf("dass2\n");
 		dda_wall_height(&vc->ray);
-		printf("dass3\n");
 		dda_side_selector(vc, &vc->ray, &vc->player, &vc->map_info);
-		printf("dass4\n");
 		x++;
 	}
 	mlx_put_image_to_window(vc->mlx.mlx, vc->mlx.window, vc->canva->img_ptr, 0, 0);
