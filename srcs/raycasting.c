@@ -25,7 +25,7 @@ void	dda_style(t_vc *vc)
     	vc->player.plane_y = 0.00;
 		ray_camera = ((2 * x) / (double)X_SCREEN - 1);
 		vc->ray.id = x;
-		vc->ray.pos_x = vc->player.pos_x;
+		vc->ray.pos_x = vc->player.pos_x + 8;
 		vc->ray.pos_y = vc->player.pos_y;
 		vc->ray.direction_x = vc->player.direction_x + vc->player.plane_x * ray_camera;
 		vc->ray.direction_y = vc->player.direction_y + vc->player.plane_y * ray_camera;
@@ -92,7 +92,7 @@ void	dda_real_distance_calc(t_vc *vc)
 			vc->ray.pos_y += vc->ray.step_y;
 			vc->ray.side = 1;
 		}
-		if (vc->map.matrix[(vc->ray.pos_y / 16) - 1][(vc->ray.pos_x / 16) - 1] == '1')
+		if (vc->map.matrix[(vc->ray.pos_y / 16) - 1][((vc->ray.pos_x - 8) / 16)] == '1')
 			hit = 1;
 
 	}
@@ -178,10 +178,10 @@ void	draw_walls(t_vc *vc, t_ray *ray, t_data *texture)
 
 	while (y < ray->wall_end)
 	{
-		//int		texture_y;
-		//texture_y = (int)texture_pos & (texture->img_size_y - 1);
+		int		texture_y;
+		texture_y = (int)texture_pos & (texture->img_size_y - 1);
 		texture_pos += step;
-		color = my_pixel_get(texture, ray->id, y);
+		color = my_pixel_get(texture, ray->id, texture_y);
 		my_mlx_pixel_put(vc->canva, ray->id, y, color);
 		y++;
 	}
