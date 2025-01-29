@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:19 by jomendes          #+#    #+#             */
-/*   Updated: 2024/12/20 17:45:16 by dinda-si         ###   ########.fr       */
+/*   Updated: 2025/01/29 17:11:09 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,6 +277,67 @@ int	get_ceiling_color(t_map_info *info)
 	return (color);
 }
 
+void	free_split(char **str)
+{
+	int i;
+
+	i = 0;
+	if (str == NULL)
+		return ;
+	while (str[i])
+	{
+		free(str[i]);
+		str[i] = NULL;
+		i++;
+	}
+	free(str);
+	str = NULL;
+}
+
+void	free_mlx(t_vc *vc)
+{
+	if (vc->map_info.ea_texture->img_ptr)
+		mlx_destroy_image(vc->mlx.mlx, vc->map_info.ea_texture->img_ptr);
+	if (vc->map_info.no_texture->img_ptr)
+		mlx_destroy_image(vc->mlx.mlx, vc->map_info.no_texture->img_ptr);
+	if (vc->map_info.so_texture->img_ptr)
+		mlx_destroy_image(vc->mlx.mlx, vc->map_info.so_texture->img_ptr);
+	if (vc->map_info.we_texture->img_ptr)
+		mlx_destroy_image(vc->mlx.mlx, vc->map_info.we_texture->img_ptr);
+	if (vc->canva->img_ptr)
+		mlx_destroy_image(vc->mlx.mlx, vc->canva->img_ptr);
+	mlx_destroy_window(vc->mlx.mlx, vc->mlx.window);
+	mlx_destroy_display(vc->mlx.mlx);
+	free (vc->mlx.mlx);
+
+}
+
+void	free_game(t_vc *vc)
+{
+	if (vc->map.file != NULL)
+		free_split(vc->map.file);
+	if (vc->map.matrix != NULL)
+		free_split(vc->map.matrix);
+	if (vc->map.matrix_ff != NULL)
+		free_split(vc->map.matrix_ff);
+	if (vc->map_info.no != NULL)
+		free(vc->map_info.no);
+	if (vc->map_info.so != NULL)
+		free(vc->map_info.so);
+	if (vc->map_info.ea != NULL)
+		free(vc->map_info.ea);
+	if (vc->map_info.we != NULL)
+		free(vc->map_info.we);
+	free_mlx(vc);
+}
+
+int	close_window(t_vc *vc)
+{
+	free_game(vc);
+	exit(EXIT_SUCCESS);
+	return (0);
+}
+
 void init(char *file)
 {
     t_vc *vc;
@@ -339,6 +400,7 @@ void init(char *file)
     mlx_hook(vc->mlx.window, 2, 1L << 0, keypress, vc);
     mlx_hook(vc->mlx.window, 3, 1L << 1, keyunpress, vc);
     mlx_loop_hook(vc->mlx.mlx, andar, vc);
+	mlx_hook(vc->mlx.window, 17, 0L, close_window, vc);
 	mlx_do_key_autorepeatoff(vc->mlx.mlx);
     mlx_loop(vc->mlx.mlx);
 }

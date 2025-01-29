@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 15:43:22 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/12/20 17:46:51 by dinda-si         ###   ########.fr       */
+/*   Updated: 2025/01/29 12:44:07 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,12 @@ typedef struct s_map
 typedef struct	s_mlx
 {
 	void			*window;
+	void			*mlx;
 	int				x;
 	int				y;
 	int				pixelx;
 	int				pixely;
-	void			*mlx;
+	
 }	t_mlx;
 
 typedef struct s_player
