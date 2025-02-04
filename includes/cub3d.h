@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 15:43:22 by dinda-si          #+#    #+#             */
-/*   Updated: 2025/01/29 12:44:07 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/04 13:44:22 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 # define PLAYERCOLOR 0xff0000
 # define FOV 720
 # define MOVE_SPEED 0.1
-# define X_SCREEN 768 //3840 3840
-# define Y_SCREEN 398 //1990 1990
+# define X_SCREEN 768 //3840 3840 768
+# define Y_SCREEN 398 //1990 1990 398
 
 typedef struct s_minimap
 {
@@ -102,6 +102,7 @@ typedef struct s_player
 typedef struct s_ray
 {
 	int				id;
+	int				wall_enemy;
 	int				pos_x;
 	int				pos_y;
 	double			direction_x;
@@ -149,6 +150,8 @@ typedef struct s_voidcollector
 	t_data			*canva;
 }	t_vc;
 
+void	free_split(char **str);
+int		close_window(t_vc *vc);
 int		coma_counter(char *str);
 int		rgb_def_check(char *str);
 int		check_args(int ac, char **av);

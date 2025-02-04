@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:19 by jomendes          #+#    #+#             */
-/*   Updated: 2025/01/29 17:11:09 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/04 15:46:12 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_vc	*get_data()
 
 int	closegame(t_vc *vc)
 {
-	vc->map.matrix_ff = NULL;
+	close_window(vc);
 	exit(0);
 }
 
@@ -249,6 +249,7 @@ int	get_floor_color(t_map_info *info)
     info->floor_color.b < 0 || info->floor_color.b > 255)
 		return (1);
 	color = (info->floor_color.r << 16 | info->floor_color.g << 8 | info->floor_color.b);
+	free_split(floor);
 	return (color);
 }
 
@@ -274,6 +275,7 @@ int	get_ceiling_color(t_map_info *info)
     info->ceiling_color.b < 0 || info->ceiling_color.b > 255)
 		return (1);
 	color = (info->ceiling_color.r << 16 | info->ceiling_color.g << 8 | info->ceiling_color.b);
+	free_split(ceiling);
 	return (color);
 }
 
@@ -287,53 +289,58 @@ void	free_split(char **str)
 	while (str[i])
 	{
 		free(str[i]);
-		str[i] = NULL;
 		i++;
 	}
 	free(str);
-	str = NULL;
 }
 
-void	free_mlx(t_vc *vc)
+void free_mlx(t_vc *vc)
 {
-	if (vc->map_info.ea_texture->img_ptr)
-		mlx_destroy_image(vc->mlx.mlx, vc->map_info.ea_texture->img_ptr);
-	if (vc->map_info.no_texture->img_ptr)
-		mlx_destroy_image(vc->mlx.mlx, vc->map_info.no_texture->img_ptr);
-	if (vc->map_info.so_texture->img_ptr)
-		mlx_destroy_image(vc->mlx.mlx, vc->map_info.so_texture->img_ptr);
-	if (vc->map_info.we_texture->img_ptr)
-		mlx_destroy_image(vc->mlx.mlx, vc->map_info.we_texture->img_ptr);
-	if (vc->canva->img_ptr)
-		mlx_destroy_image(vc->mlx.mlx, vc->canva->img_ptr);
-	mlx_destroy_window(vc->mlx.mlx, vc->mlx.window);
-	mlx_destroy_display(vc->mlx.mlx);
-	free (vc->mlx.mlx);
-
+	if (vc->map_info.no)
+		free(vc->map_info.no);
+	if (vc->map_info.so)
+		free(vc->map_info.so);
+	if (vc->map_info.ea)
+		free(vc->map_info.ea);
+	if (vc->map_info.we)
+		free(vc->map_info.we);
+	if (vc->canva)
+		free(vc->canva);
+	if (vc->mlx.mlx)
+	{
+		mlx_destroy_window(vc->mlx.mlx, vc->mlx.window);
+		mlx_destroy_display(vc->mlx.mlx);
+		free(vc->mlx.mlx);
+	}
 }
 
 void	free_game(t_vc *vc)
 {
-	if (vc->map.file != NULL)
+	printf("ai\n");
+	if (vc->map.file)
 		free_split(vc->map.file);
-	if (vc->map.matrix != NULL)
+	if (vc->map.matrix)
 		free_split(vc->map.matrix);
-	if (vc->map.matrix_ff != NULL)
+	if (vc->map.matrix_ff)
 		free_split(vc->map.matrix_ff);
-	if (vc->map_info.no != NULL)
-		free(vc->map_info.no);
-	if (vc->map_info.so != NULL)
-		free(vc->map_info.so);
-	if (vc->map_info.ea != NULL)
-		free(vc->map_info.ea);
-	if (vc->map_info.we != NULL)
-		free(vc->map_info.we);
+	if (vc->map_info.ea_texture && vc->map_info.ea_texture->img_ptr)
+		mlx_destroy_image(vc->mlx.mlx, vc->map_info.ea_texture->img_ptr);
+	if (vc->map_info.no_texture && vc->map_info.no_texture->img_ptr)
+		mlx_destroy_image(vc->mlx.mlx, vc->map_info.no_texture->img_ptr);
+	if (vc->map_info.so_texture && vc->map_info.so_texture->img_ptr)
+		mlx_destroy_image(vc->mlx.mlx, vc->map_info.so_texture->img_ptr);
+	if (vc->map_info.we_texture && vc->map_info.we_texture->img_ptr)
+		mlx_destroy_image(vc->mlx.mlx, vc->map_info.we_texture->img_ptr);
+	if (vc->canva && vc->canva->img_ptr)
+		mlx_destroy_image(vc->mlx.mlx, vc->canva->img_ptr);
 	free_mlx(vc);
 }
 
 int	close_window(t_vc *vc)
 {
+	printf("close_window called\n");
 	free_game(vc);
+	printf("2\n");
 	exit(EXIT_SUCCESS);
 	return (0);
 }
@@ -400,7 +407,16 @@ void init(char *file)
     mlx_hook(vc->mlx.window, 2, 1L << 0, keypress, vc);
     mlx_hook(vc->mlx.window, 3, 1L << 1, keyunpress, vc);
     mlx_loop_hook(vc->mlx.mlx, andar, vc);
-	mlx_hook(vc->mlx.window, 17, 0L, close_window, vc);
+	printf("Configuring close_window with vc: %p\n", vc);
+	// mlx_hook(vc->mlx.window, 17, 0L, close_window, vc);
+	if (!vc->mlx.window) {
+    printf("Window creation failed!\n");
+	} else {
+	    printf("Window created successfully!\n");
+	}
+	int result = mlx_hook(vc->mlx.window, 17, 0L, close_window, vc);
+
+	printf("mlx_hook result: %d\n", result);
 	mlx_do_key_autorepeatoff(vc->mlx.mlx);
     mlx_loop(vc->mlx.mlx);
 }
@@ -408,6 +424,7 @@ void init(char *file)
 
 int main(int ac, char **av)
 {
+	
 	if (!check_args(ac, av))
 		return (0);
 	init(av[1]);

@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:49:40 by elemesmo          #+#    #+#             */
-/*   Updated: 2024/12/13 11:48:16 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/04 15:52:34 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,8 +199,8 @@ int	get_file_heigth(char *file)
 	row = get_next_line(fd);
 	while (row)
 	{
-		row = get_next_line(fd);
 		free(row);
+		row = get_next_line(fd);
 		counter++;
 	}
 	close(fd);

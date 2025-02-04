@@ -93,17 +93,19 @@ void	dda_real_distance_calc(t_vc *vc)
 			vc->ray.side = 1;
 		}
 		if (vc->map.matrix[(vc->ray.pos_y / 16) - 1][((vc->ray.pos_x - 8) / 16)] == '1')
+		{
 			hit = 1;
-
+			vc->ray.wall_enemy = 1;
+		}
 	}
-	if (vc->ray.side == 0)
-		vc->ray.real_size = (vc->ray.distance_x - vc->ray.delta_dist_x);
-	else
-		vc->ray.real_size = (vc->ray.distance_y - vc->ray.delta_dist_y);
 }
 
 void	dda_wall_height(t_ray *ray)
 {
+	if (ray->side == 0)
+		ray->real_size = (ray->distance_x - ray->delta_dist_x);
+	else
+		ray->real_size = (ray->distance_y - ray->delta_dist_y);
 	ray->line_height = (int)(Y_SCREEN / ray->real_size);
 	ray->wall_start = -ray->line_height / 2 + Y_SCREEN / 2;
 	if (ray->wall_start < 0 || ray->line_height < 0)
