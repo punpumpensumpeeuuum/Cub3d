@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:19 by jomendes          #+#    #+#             */
-/*   Updated: 2025/02/04 15:46:12 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:41:56 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,9 +289,11 @@ void	free_split(char **str)
 	while (str[i])
 	{
 		free(str[i]);
+		str[i] = NULL;
 		i++;
 	}
 	free(str);
+	str = NULL;
 }
 
 void free_mlx(t_vc *vc)
@@ -316,13 +318,14 @@ void free_mlx(t_vc *vc)
 
 void	free_game(t_vc *vc)
 {
-	printf("ai\n");
-	if (vc->map.file)
-		free_split(vc->map.file);
-	if (vc->map.matrix)
-		free_split(vc->map.matrix);
-	if (vc->map.matrix_ff)
-		free_split(vc->map.matrix_ff);
+    if (vc->map.matrix) {
+        free_split(vc->map.matrix);
+        vc->map.matrix = NULL;
+    }
+    if (vc->map.matrix_ff) {
+        free_split(vc->map.matrix_ff);
+        vc->map.matrix_ff = NULL;
+    }
 	if (vc->map_info.ea_texture && vc->map_info.ea_texture->img_ptr)
 		mlx_destroy_image(vc->mlx.mlx, vc->map_info.ea_texture->img_ptr);
 	if (vc->map_info.no_texture && vc->map_info.no_texture->img_ptr)
@@ -340,7 +343,6 @@ int	close_window(t_vc *vc)
 {
 	printf("close_window called\n");
 	free_game(vc);
-	printf("2\n");
 	exit(EXIT_SUCCESS);
 	return (0);
 }
@@ -419,6 +421,10 @@ void init(char *file)
 	printf("mlx_hook result: %d\n", result);
 	mlx_do_key_autorepeatoff(vc->mlx.mlx);
     mlx_loop(vc->mlx.mlx);
+	if (vc->map.file) {
+        free_split(vc->map.file);
+        vc->map.file = NULL;
+	}
 }
 
 

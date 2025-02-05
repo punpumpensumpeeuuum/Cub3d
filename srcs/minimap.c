@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 12:27:25 by dinda-si          #+#    #+#             */
-/*   Updated: 2024/12/20 17:50:38 by dinda-si         ###   ########.fr       */
+/*   Updated: 2025/02/05 12:25:21 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,3 +42,8 @@ void	drawminimap(t_vc *vc)
 		i++;
 	}
 }
+
+// void	drawenemy(t_vc *vc)
+// {
+	
+// }

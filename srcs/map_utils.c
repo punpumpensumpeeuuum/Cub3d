@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:49:40 by elemesmo          #+#    #+#             */
-/*   Updated: 2025/02/04 15:52:34 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/05 16:36:31 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*create_top_bottom(t_map *map)
 	char	*str;
 
 	i = 0;
-	str = malloc(map->x + 3);
+	str = malloc(map->x + 4);
 	if (!str)
 		return (NULL);
 	while (i < map->x + 2)
@@ -63,12 +63,12 @@ void	second_map(t_map *map)
 	map->matrix_ff[y++] = create_top_bottom(map);
 	while (y <= map->y)
 	{
-		map->matrix_ff[y] = malloc(map->x + 3);
+		map->matrix_ff[y] = malloc(map->x + 4);
 		if (!map->matrix_ff[y])
 			return ;
 		x = 0;
 		map->matrix_ff[y][x] = 'w';
-		while (x <= map->x)
+		while (x <= map->x + 1)
 		{
 			while (map->matrix[y - 1][x] == ' ')
 			{
@@ -156,11 +156,38 @@ int	check_0(t_map *map)
 	return (0);
 }
 
+int valid_chars(t_map *map)
+{
+	int x;
+	int y;
+
+	y = 0;
+	while (map->matrix[y])
+	{
+		x = 0;
+		while (map->matrix[y][x])
+		{
+			if (!(map->matrix[y][x] == '1' || map->matrix[y][x] == '0'
+			|| map->matrix[y][x] == ' ' || map->matrix[y][x] == 'B'
+			|| map->matrix[y][x] == 'N' || map->matrix[y][x] == 'S'
+			|| map->matrix[y][x] == 'E' || map->matrix[y][x] == 'W'
+			|| map->matrix[y][x] == '\n'))
+			{
+				ft_putstr_fd("Invalid character in the map\n", 2);
+				return (1);
+			}
+			x++;
+		}
+		y++;
+	}
+	return (0);
+}
+
 int	check_map(t_map *map)
 {
 	if (!map->matrix_ff)
 		return (1);
-	if (check_map_x(map, 0) == 0 && check_map_x(map, map->y - 1) == 0
+	if (valid_chars(map) == 0 && check_map_x(map, 0) == 0 && check_map_x(map, map->y - 1) == 0
 	&& check_map_y(map) == 0 && check_0(map) == 0)
 		return (0);
 	return (1);

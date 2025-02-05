@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 15:43:22 by dinda-si          #+#    #+#             */
-/*   Updated: 2025/02/04 13:44:22 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/05 12:25:02 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ typedef struct s_player
 typedef struct s_ray
 {
 	int				id;
-	int				wall_enemy;
 	int				pos_x;
 	int				pos_y;
 	double			direction_x;
@@ -150,6 +149,7 @@ typedef struct s_voidcollector
 	t_data			*canva;
 }	t_vc;
 
+int		valid_chars(t_map *map);
 void	free_split(char **str);
 int		close_window(t_vc *vc);
 int		coma_counter(char *str);
