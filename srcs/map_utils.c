@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:49:40 by elemesmo          #+#    #+#             */
-/*   Updated: 2025/02/05 16:36:31 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/07 12:08:38 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ void	second_map(t_map *map)
 	map->matrix_ff = malloc((map->y + 3) * sizeof(char *));
 	if (!map->matrix_ff)
 		return ;
-	map->matrix_ff[y++] = create_top_bottom(map);
+	map->matrix_ff[y] = create_top_bottom(map);
+	y++;
 	while (y <= map->y)
 	{
 		map->matrix_ff[y] = malloc(map->x + 4);
@@ -68,7 +69,7 @@ void	second_map(t_map *map)
 			return ;
 		x = 0;
 		map->matrix_ff[y][x] = 'w';
-		while (x <= map->x + 1)
+		while (x <= map->x)
 		{
 			while (map->matrix[y - 1][x] == ' ')
 			{
@@ -78,7 +79,8 @@ void	second_map(t_map *map)
 			map->matrix_ff[y][x + 1] = map->matrix[y - 1][x];
 			x++;
 		}
-		x = ft_strlen(map->matrix_ff[y]) - 1;
+		if (y == map->y)
+			x = ft_strlen(map->matrix_ff[y]) - 1;
 		if (y == map->y && map->matrix_ff[y][x] != '\n')
 			x++;
 		while(x <= map->x + 1)

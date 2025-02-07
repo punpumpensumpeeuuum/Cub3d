@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:19 by jomendes          #+#    #+#             */
-/*   Updated: 2025/02/05 16:41:56 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/07 11:59:12 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -356,6 +356,8 @@ void init(char *file)
 	vc->mlx.y = Y_SCREEN;
 	vc->mlx.pixelx = vc->mlx.x / 16;
 	vc->mlx.pixely = vc->mlx.y / 16;
+	vc->map.y = 0;
+	vc->map.x = 0;
     vc->map.file = get_file(file, &vc->map);
     vc->map.matrix = get_map(&vc->map);
     if (get_floor(&vc->map, &vc->map_info) == 1)
