@@ -104,6 +104,7 @@ int andar(t_vc *vc)
 	movemnt(vc);
 	my_img_clear(*vc->canva);
 	dda_style(vc);
+	draw_bees(vc);
 	// mlx_clear_window(vc->mlx.mlx, vc->mlx.window);
 	if (vc->minimap.onoff == 1)
 		drawminimap(vc);
@@ -377,6 +378,7 @@ void init(char *file)
 		dprintf(2, "HALLOHA\n");
         exit(1);
 	}
+	printf("oi\n");
 	i = -1;
 	while (vc->map.matrix_ff[++i])
 	{
@@ -390,6 +392,8 @@ void init(char *file)
     placeplayer(vc);
     alloc_textures1(vc);
     alloc_textures(vc);
+	init_images(vc);
+	find_enemies(vc);
 	if (get_ceiling_color(&vc->map_info) == 1)
 	{
 		ft_putstr_fd("Invalid RGB on ceiling\n", 2);

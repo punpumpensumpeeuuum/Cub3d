@@ -30,6 +30,7 @@
 # define MOVE_SPEED 0.1
 # define X_SCREEN 768 //3840 3840 768
 # define Y_SCREEN 398 //1990 1990 398
+# define MAX_ENEMIES 2
 
 typedef struct s_minimap
 {
@@ -137,6 +138,13 @@ typedef struct s_map_info
 	t_rgb			floor_color;
 } t_map_info;
 
+typedef struct s_enemy
+{
+    double x;
+    double y;
+} t_enemy;
+
+
 typedef struct s_voidcollector
 {
 	t_mlx			mlx;
@@ -147,8 +155,15 @@ typedef struct s_voidcollector
 	t_ray			ray;
 	t_data			data;
 	t_data			*canva;
+	t_enemy			enemies[MAX_ENEMIES];
+	int				enemy_count;
+	void			**bees;
 }	t_vc;
 
+void	draw_bees(t_vc *vc);
+void	find_enemies(t_vc *vc);
+void	draw_bees(t_vc *vc);
+int		my_pixel_get(t_data *data, int x, int y);
 int		valid_chars(t_map *map);
 void	free_split(char **str);
 int		close_window(t_vc *vc);
@@ -175,6 +190,7 @@ int		get_ceiling(t_map *map, t_map_info *info);
 void	player_pos(t_map *map, t_vc *vc);
 int		get_floor_color(t_map_info *info);
 int		get_ceiling_color(t_map_info *info);
+void	init_images(t_vc *vc);
 
 // raycasting
 void	dda_style(t_vc *vc);

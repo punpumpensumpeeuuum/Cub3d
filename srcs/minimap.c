@@ -43,7 +43,3 @@ void	drawminimap(t_vc *vc)
 	}
 }
 
-// void	drawenemy(t_vc *vc)
-// {
-	
-// }
