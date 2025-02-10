@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:23 by jomendes          #+#    #+#             */
-/*   Updated: 2024/12/20 17:49:04 by dinda-si         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:27:21 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,58 +80,47 @@ void	placeplayer(t_vc *vc)
 
 void init_images(t_vc *vc)
 {
-    int width, height;
+    int width;
+	int height;
 
-    // Allocate memory for enemy textures
-    vc->bees = ft_calloc(2, sizeof(void *));  // Allocating memory for two textures
+	vc->current_bee_image = 0;
+    vc->bees = ft_calloc(2, sizeof(void *));
     if (!vc->bees)
     {
         printf("Erro ao alocar memória para as imagens das abelhas.\n");
         return;
     }
-
-    // Load bee texture (abelha.xpm)
     vc->bees[0] = mlx_xpm_file_to_image(vc->mlx.mlx, "srcs/xpm/abelha.xpm", &width, &height);
     if (!vc->bees[0])
-    {
         printf("Erro ao carregar a imagem da abelha.\n");
-    }
     else
-    {
         printf("Imagem da abelha carregada com sucesso. Tamanho: %d x %d\n", width, height);
-    }
-
-    // Load security texture (Security.xpm)
-    vc->bees[1] = mlx_xpm_file_to_image(vc->mlx.mlx, "srcs/xpm/Security.xpm", &width, &height);
+    vc->bees[1] = mlx_xpm_file_to_image(vc->mlx.mlx, "srcs/xpm/abelha1.xpm", &width, &height);
     if (!vc->bees[1])
-    {
         printf("Erro ao carregar a imagem do segurança.\n");
-    }
     else
-    {
         printf("Imagem do segurança carregada com sucesso. Tamanho: %d x %d\n", width, height);
-    }
 }
 
 void find_enemies(t_vc *vc)
 {
-    vc->enemy_count = 0;
 	int y;
 	int x;
 
 	y = 0;
+	vc->enemy_count = 0;
 	while (vc->map.matrix[y])
 	{
 		x = 0;
         while (vc->map.matrix[y][x])
         {
-            if (vc->map.matrix[y][x] == 'B') // Se encontrar um 'B' no mapa
+            if (vc->map.matrix[y][x] == 'B')
             {
-                vc->enemies[vc->enemy_count].x = x + 0.5; // Centraliza no bloco
+                vc->enemies[vc->enemy_count].x = x + 0.5;
                 vc->enemies[vc->enemy_count].y = y + 0.5;
                 vc->enemy_count++;
                 
-                if (vc->enemy_count >= MAX_ENEMIES) // Evita ultrapassar o limite
+                if (vc->enemy_count >= MAX_ENEMIES)
                     return;
             }
 			x++;
@@ -154,11 +143,11 @@ void draw_bees(t_vc *vc)
         double transform_x = inv_det * (vc->player.direction_y * dx - vc->player.direction_x * dy);
         double transform_y = inv_det * (-vc->player.plane_y * dx + vc->player.plane_x * dy);
 
-        if (transform_y <= 0) // Está atrás do jogador? Então não desenha
+        if (transform_y <= 0)
             continue;
 
         int sprite_screen_x = (X_SCREEN / 2) * (1 + transform_x / transform_y);
-        int sprite_height = abs((int)(Y_SCREEN / transform_y)); // Tamanho baseado na distância
+        int sprite_height = abs((int)(Y_SCREEN / transform_y));
 
         int draw_start_y = -sprite_height / 2 + Y_SCREEN / 2;
         if (draw_start_y < 0)
@@ -166,8 +155,27 @@ void draw_bees(t_vc *vc)
         int draw_end_y = sprite_height / 2 + Y_SCREEN / 2;
         if (draw_end_y >= Y_SCREEN)
             draw_end_y = Y_SCREEN - 1;
+        mlx_put_image_to_window(vc->mlx.mlx, vc->mlx.window, vc->bees[vc->current_bee_image], sprite_screen_x, draw_start_y);
+    }
+}
 
-        // Desenha a abelha
-        mlx_put_image_to_window(vc->mlx.mlx, vc->mlx.window, vc->bees[0], sprite_screen_x, draw_start_y);
+void move_bees(t_vc *vc)
+{
+    for (int i = 0; i < vc->enemy_count; i++)
+    {
+        double dx = vc->player.pos_x - vc->enemies[i].x;
+        double dy = vc->player.pos_y - vc->enemies[i].y;
+
+        double distance = sqrt(dx * dx + dy * dy);
+        double move_speed = 0.3;
+
+        if (distance > 3)
+        {
+            if (dy > 0)
+                vc->enemies[i].y += move_speed;
+            else if (dy < 0) 
+                vc->enemies[i].y -= move_speed;
+        }
+		printf("Bee %d - x: %.2f, y: %.2f\n", i, vc->enemies[i].x, vc->enemies[i].y);
     }
 }

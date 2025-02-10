@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:19 by jomendes          #+#    #+#             */
-/*   Updated: 2025/02/07 11:59:12 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:26:07 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ void	movemnt(t_vc *vc)
 	if (vc->player.w == 1 && vc->map.matrix[((vc->player.pos_y - 1) / 16) - 1][((vc->player.pos_x - 1) / \
 		16)] != '1' && vc->map.matrix[((vc->player.pos_y - 1) / 16) - 1][((vc->player.pos_x - 14) / 16)] != '1')
 		vc->player.pos_y--;
-		//vc->player.pos_y += vc->player.direction_y * MOVE_SPEED;
 	if (vc->player.a == 1 && vc->map.matrix[((vc->player.pos_y + 1) / 16) - 1][((vc->player.pos_x - 1) / \
 		16) - 1] != '1' && vc->map.matrix[((vc->player.pos_y + 14) /	16) - 1][((vc->player.pos_x - 1) / 16) - 1] != '1')
 		vc->player.pos_x--;
@@ -136,10 +135,29 @@ void	my_img_clear(t_data data)
 	}
 }
 
+long	get_time_in_microseconds()
+{
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return tv.tv_sec * 1000000 + tv.tv_usec;
+}
+
 int andar(t_vc *vc)
 {
+	static long last_time = 0;
+	long current_time = get_time_in_microseconds();
+
+	if (current_time - last_time > 20000)
+	{
+		if (vc->current_bee_image == 0)
+			vc->current_bee_image = 1;
+		else
+			vc->current_bee_image = 0;
+	}
+	last_time = current_time;
 	movemnt(vc);
 	move_camera(vc);
+	move_bees(vc);
 	my_img_clear(*vc->canva);
 	dda_style(vc);
 	draw_bees(vc);

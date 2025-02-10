@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 15:43:22 by dinda-si          #+#    #+#             */
-/*   Updated: 2025/02/05 12:25:02 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/10 12:47:10 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdio.h>
 # include <signal.h>
 # include <time.h>
+# include <sys/time.h>
 # include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"
 # include "../get_next_line/get_next_line.h"
@@ -161,11 +162,13 @@ typedef struct s_voidcollector
 	t_enemy			enemies[MAX_ENEMIES];
 	int				enemy_count;
 	void			**bees;
+	int				current_bee_image;
 }	t_vc;
 
+long	get_time_in_microseconds();
+void	move_bees(t_vc *vc);
 void	draw_bees(t_vc *vc);
 void	find_enemies(t_vc *vc);
-void	draw_bees(t_vc *vc);
 int		my_pixel_get(t_data *data, int x, int y);
 int		valid_chars(t_map *map);
 void	free_split(char **str);
