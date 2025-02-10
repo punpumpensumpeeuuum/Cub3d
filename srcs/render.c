@@ -23,16 +23,18 @@ void	placeplayer(t_vc *vc)
 		j = 0;
 		while (j < vc->map.matrix[i][j])
 		{
-			if (vc->map.matrix[i][j] == 'N' || vc->map.matrix[i][j] == 'O')
+			if (vc->map.matrix[i][j] == 'N')
 			{
 				vc->player.grid_x = j;
 				vc->player.grid_y = i;	
 				vc->player.facing = 270;
 				vc->player.pos_x = ((j + 1) * vc->mlx.pixelx);
-				vc->player.pos_y = ((i + 1) * (vc->mlx.pixely));
+				vc->player.pos_y = ((i + 1) * vc->mlx.pixely);
 				vc->player.angle = 270 * (PI / 180);
 				vc->player.direction_x = 0.00;
 				vc->player.direction_y = -1.00;
+				vc->player.plane_x = 0.66;
+				vc->player.plane_y = 0.00;
 			}
 			if (vc->map.matrix[i][j] == 'S')
 			{
@@ -43,6 +45,8 @@ void	placeplayer(t_vc *vc)
 				vc->player.angle = 90 * (PI / 180);
 				vc->player.direction_x = 0.00;
 				vc->player.direction_y = 1.00;
+				vc->player.plane_x = -0.66;
+				vc->player.plane_y = 0.00;
 			}
 			if (vc->map.matrix[i][j] == 'E')
 			{
@@ -53,6 +57,8 @@ void	placeplayer(t_vc *vc)
 				vc->player.angle = 0 * (PI / 180);
 				vc->player.direction_x = 1.00;
 				vc->player.direction_y = 0.00;
+				vc->player.plane_x = 0.00;
+				vc->player.plane_y = 0.66;
 			}
 			if (vc->map.matrix[i][j] == 'W')
 			{
@@ -63,6 +69,8 @@ void	placeplayer(t_vc *vc)
 				vc->player.angle = 180 * (PI / 180);
 				vc->player.direction_x = -1.00;
 				vc->player.direction_y = 0.00;
+				vc->player.plane_x = 0.00;
+				vc->player.plane_y = -0.66;
 			}
 			j++;
 		}
@@ -163,5 +171,3 @@ void draw_bees(t_vc *vc)
         mlx_put_image_to_window(vc->mlx.mlx, vc->mlx.window, vc->bees[0], sprite_screen_x, draw_start_y);
     }
 }
-
-

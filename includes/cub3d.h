@@ -28,8 +28,10 @@
 # define PLAYERCOLOR 0xff0000
 # define FOV 720
 # define MOVE_SPEED 0.1
-# define X_SCREEN 768 //3840 3840 768
-# define Y_SCREEN 398 //1990 1990 398
+# define L_ARROW 65361
+# define R_ARROW 65363
+# define X_SCREEN 720 //3840 3840 768
+# define Y_SCREEN 480 //1990 1990 398
 # define MAX_ENEMIES 2
 
 typedef struct s_minimap
@@ -89,6 +91,7 @@ typedef struct s_player
 	int				a;
 	int				s;
 	int				d;
+	int				o;
 	int				pos_x;
 	int				pos_y;
 	int				grid_x;

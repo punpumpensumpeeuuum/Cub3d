@@ -21,22 +21,14 @@ void	dda_style(t_vc *vc)
 	x = 0;
 	while (x < X_SCREEN)
 	{
-		vc->player.plane_x = 0.66;
-    	vc->player.plane_y = 0.00;
 		ray_camera = ((2 * x) / (double)X_SCREEN - 1);
 		vc->ray.id = x;
-		vc->ray.pos_x = vc->player.pos_x + 8;
+		vc->ray.pos_x = vc->player.pos_x;
 		vc->ray.pos_y = vc->player.pos_y;
 		vc->ray.direction_x = vc->player.direction_x + vc->player.plane_x * ray_camera;
 		vc->ray.direction_y = vc->player.direction_y + vc->player.plane_y * ray_camera;
-		if (vc->ray.direction_x == 0)
-			vc->ray.delta_dist_x = 1e30;
-		else
-			vc->ray.delta_dist_x = fabs(1 / vc->ray.direction_x);
-		if (vc->ray.direction_y == 0)
-			vc->ray.delta_dist_y = 1e30;
-		else
-			vc->ray.delta_dist_y = fabs(1 / vc->ray.direction_y);
+		vc->ray.delta_dist_x = fabs(1 / vc->ray.direction_x);
+		vc->ray.delta_dist_y = fabs(1 / vc->ray.direction_y);
 		dda_step_calc(vc);
 		dda_real_distance_calc(vc);
 		dda_wall_height(&vc->ray);
@@ -51,24 +43,24 @@ void	dda_step_calc(t_vc *vc)
 	if (vc->ray.direction_x < 0)
 	{
 		vc->ray.step_x = -1;
-		vc->ray.distance_x = (vc->player.pos_x - vc->ray.pos_x)
+		vc->ray.distance_x = ((vc->player.pos_x / 16) - (vc->ray.pos_x / 16))
 			* vc->ray.delta_dist_x;
 	}
 	else
 	{
 		vc->ray.step_x = 1;
-		vc->ray.distance_x = (vc->ray.pos_x + 1.0 - vc->player.pos_x)
+		vc->ray.distance_x = ((vc->ray.pos_x / 16) + 1.0 - (vc->player.pos_x / 16))
 			* vc->ray.delta_dist_x;
 	}
 	if (vc->ray.direction_y < 0)
 	{
 		vc->ray.step_y = -1;
-		vc->ray.distance_y = (vc->player.pos_y - vc->ray.pos_y) * vc->ray.delta_dist_y;
+		vc->ray.distance_y = ((vc->player.pos_y / 16) - (vc->ray.pos_y / 16)) * vc->ray.delta_dist_y;
 	}
 	else
 	{
 		vc->ray.step_y = 1;
-		vc->ray.distance_y = (vc->ray.pos_y + 1.0 - vc->player.pos_y)
+		vc->ray.distance_y = ((vc->ray.pos_y / 16) + 1.0 - (vc->player.pos_y / 16))
 			* vc->ray.delta_dist_y;
 	}
 }
@@ -92,17 +84,17 @@ void	dda_real_distance_calc(t_vc *vc)
 			vc->ray.pos_y += vc->ray.step_y;
 			vc->ray.side = 1;
 		}
-        if (vc->map.matrix[(int)(vc->ray.pos_y / 16)][(int)(vc->ray.pos_x / 16)] == '1')
+        if (vc->map.matrix[(int)(vc->ray.pos_y / 16) - 1][(int)(vc->ray.pos_x / 16)] == '1')
             hit = 1;
     }
+	if (vc->ray.side == 0)
+		vc->ray.real_size = (vc->ray.distance_x - vc->ray.delta_dist_x);
+	else
+		vc->ray.real_size = (vc->ray.distance_y - vc->ray.delta_dist_y);
 }
 
 void	dda_wall_height(t_ray *ray)
 {
-	if (ray->side == 0)
-		ray->real_size = (ray->distance_x - ray->delta_dist_x);
-	else
-		ray->real_size = (ray->distance_y - ray->delta_dist_y);
 	ray->line_height = (int)(Y_SCREEN / ray->real_size);
 	ray->wall_start = -ray->line_height / 2 + Y_SCREEN / 2;
 	if (ray->wall_start < 0 || ray->line_height < 0)
@@ -166,7 +158,7 @@ void	draw_walls(t_vc *vc, t_ray *ray, t_data *texture)
 {
 	double	step;
 	double	texture_pos;
-
+	int		texture_y;
 	int		color;
 	int		y;
 
@@ -174,14 +166,12 @@ void	draw_walls(t_vc *vc, t_ray *ray, t_data *texture)
 	texture_pos = (ray->wall_start - Y_SCREEN / 2
 			+ ray->line_height / 2) * step;
 	y = ray->wall_start;
-
 	while (y < ray->wall_end)
 	{
-		int		texture_y;
 		texture_y = (int)texture_pos & (texture->img_size_y - 1);
-		texture_pos += step;
 		color = my_pixel_get(texture, ray->id, texture_y);
 		my_mlx_pixel_put(vc->canva, ray->id, y, color);
+		texture_pos += step;
 		y++;
 	}
 	draw_floor_ceiling(vc, ray);
