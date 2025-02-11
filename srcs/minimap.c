@@ -14,7 +14,6 @@
 
 void draw_rectangle(t_vc *vc, char c, int i, int j)
 {
-	printf("Pixel Size: %d x %d\n", vc->mlx.pixelx, vc->mlx.pixely);
 	if (c == '1')
 		mlx_put_image_to_window(vc->mlx.mlx, vc->mlx.window, vc->minimap.wall, j * 16, i * 16);
 	else

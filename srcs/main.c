@@ -25,35 +25,6 @@ int	closegame(t_vc *vc)
 	exit(0);
 }
 
-void	move_camera(t_vc *vc)
-{
-	double	old_camera_x;
-
-	old_camera_x = vc->player.plane_x;
-	if (vc->player.o == 1) // left
-	{
-		vc->player.direction_x = vc->player.direction_x * cos(-0.1)
-			- vc->player.direction_y * sin(-0.1);
-		vc->player.direction_y = vc->player.direction_x * sin(-0.1)
-			+ vc->player.direction_y * cos(-0.1);
-		vc->player.plane_x = vc->player.plane_x * cos(-0.1)
-			- vc->player.plane_y * sin(-0.1);
-		vc->player.plane_y = old_camera_x * sin(-0.1)
-			+ vc->player.plane_y * cos(-0.1);
-	}
-	else if (vc->player.o == 2) // right
-	{
-		vc->player.direction_x = vc->player.direction_x * cos(0.1)
-			- vc->player.direction_y * sin(0.1);
-		vc->player.direction_y = vc->player.direction_x * sin(0.1)
-			+ vc->player.direction_y * cos(0.1);
-		vc->player.plane_x = vc->player.plane_x * cos(0.1)
-			- vc->player.plane_y * sin(0.1);
-		vc->player.plane_y = old_camera_x * sin(0.1)
-			+ vc->player.plane_y * cos(0.1);
-	}
-}
-
 int	keypress(int keycode, t_vc *vc)
 {
 	if (keycode == 65307)
@@ -99,24 +70,6 @@ int	keyunpress(int keycode, t_vc *vc)
 	return (0);
 }
 
-void	movemnt(t_vc *vc)
-{
-	//printf("%d\n", vc->player.pos_x);
-	//printf("%d\n", vc->player.pos_y);
-	if (vc->player.w == 1 && vc->map.matrix[((vc->player.pos_y - 1) / 16) - 1][((vc->player.pos_x - 1) / \
-		16)] != '1' && vc->map.matrix[((vc->player.pos_y - 1) / 16) - 1][((vc->player.pos_x - 14) / 16)] != '1')
-		vc->player.pos_y--;
-	if (vc->player.a == 1 && vc->map.matrix[((vc->player.pos_y + 1) / 16) - 1][((vc->player.pos_x - 1) / \
-		16) - 1] != '1' && vc->map.matrix[((vc->player.pos_y + 14) /	16) - 1][((vc->player.pos_x - 1) / 16) - 1] != '1')
-		vc->player.pos_x--;
-	if (vc->player.d == 1 && vc->map.matrix[((vc->player.pos_y - 1) / 16)][((vc->player.pos_x) / \
-		16)] != '1' && vc->map.matrix[((vc->player.pos_y - 14) / 16)][((vc->player.pos_x) / 16)] != '1')
-		vc->player.pos_x++;
-	if (vc->player.s == 1 && vc->map.matrix[((vc->player.pos_y) / 16)][((vc->player.pos_x - 1) / \
-		16)] != '1' && vc->map.matrix[((vc->player.pos_y) / 16)][((vc->player.pos_x - 14) / 16)] != '1')
-		vc->player.pos_y++;
-}
-
 void	my_img_clear(t_data data)
 {
 	int	j;
@@ -156,7 +109,6 @@ int andar(t_vc *vc)
 	}
 	last_time = current_time;
 	movemnt(vc);
-	move_camera(vc);
 	move_bees(vc);
 	my_img_clear(*vc->canva);
 	dda_style(vc);

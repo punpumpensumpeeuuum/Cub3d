@@ -22,7 +22,7 @@ MLXFLAGS = -lXext -lX11
 
 OBJ_DIR = objs
 
-SRCS = srcs/main.c srcs/render.c srcs/map.c srcs/free.c srcs/map_utils.c srcs/minimap.c\
+SRCS = srcs/main.c srcs/render.c srcs/map.c srcs/free.c srcs/map_utils.c srcs/minimap.c srcs/movement.c\
 		get_next_line/get_next_line_bonus.c \
 		get_next_line/get_next_line_utils_bonus.c \
 		srcs/map_utils1.c srcs/raycasting.c

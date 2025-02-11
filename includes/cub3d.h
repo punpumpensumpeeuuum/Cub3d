@@ -209,4 +209,11 @@ int		get_raycolor(int tex_x, int tex_y, t_data *data);
 void	draw_walls(t_vc *vc, t_ray *ray, t_data *texture);
 void	draw_floor_ceiling(t_vc *vc, t_ray *ray);
 
+// movement
+
+void	move_camera(t_vc *vc);
+void	movemnt(t_vc *vc);
+void	frente_movimento(t_vc *vc);
+void	lado_movimento(t_vc *vc);
+
 #endif

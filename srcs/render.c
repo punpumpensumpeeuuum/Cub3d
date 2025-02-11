@@ -176,6 +176,6 @@ void move_bees(t_vc *vc)
             else if (dy < 0) 
                 vc->enemies[i].y -= move_speed;
         }
-		printf("Bee %d - x: %.2f, y: %.2f\n", i, vc->enemies[i].x, vc->enemies[i].y);
+		// printf("Bee %d - x: %.2f, y: %.2f\n", i, vc->enemies[i].x, vc->enemies[i].y);
     }
 }
