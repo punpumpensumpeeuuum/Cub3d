@@ -16,46 +16,45 @@ void	frente_movimento(t_vc *vc)
 {
 	if (vc->player.w == 1)
 	{
-		// Calculate the new potential positions
-		float new_pos_x = vc->player.pos_x + vc->player.direction_x * MOVE_SPEED;
-		float new_pos_y = vc->player.pos_y + vc->player.direction_y * MOVE_SPEED;
-	
-		// Debug: Print the current positions and directions
-		printf("Current pos_x: %d, pos_y: %d\n", vc->player.pos_x, vc->player.pos_y);
-		printf("Moving by direction_x: %f, direction_y: %f\n", vc->player.direction_x, vc->player.direction_y);
-		printf("New potential pos_x: %f, pos_y: %f\n", new_pos_x, new_pos_y);
-	
-		// Check if the new Y position is valid (not a wall)
-		if (vc->map.matrix[(int)(new_pos_y / 16)][(int)(vc->player.pos_x / 16)] != '1')
-		{
-			printf("New Y position is valid\n");
-			vc->player.pos_y = new_pos_y;
-		}
-	
-		// Check if the new X position is valid (not a wall)
-		if (vc->map.matrix[(int)(vc->player.pos_y / 16)][(int)(new_pos_x / 16)] != '1')
-		{
-			printf("New X position is valid\n");
-			vc->player.pos_x = new_pos_x;
-		}
+		if (vc->map.matrix[(int)(vc->player.pos_y + vc->player.direction_y * MOVE_SPEED)]
+			[(int)(vc->player.pos_x)] != '1')
+			vc->player.pos_y += vc->player.direction_y * MOVE_SPEED;
+		if (vc->map.matrix[(int)(vc->player.pos_y)]
+			[(int)(vc->player.pos_x + vc->player.direction_x * MOVE_SPEED)] != '1')
+			vc->player.pos_x += vc->player.direction_x * MOVE_SPEED;
 	}
-	
-	
-	// else if (vc->player.s == 1)
-	// {
-	// 	if (map->map[(int)(player->pos.y - player->direction.y * MOVE_SPEED)]
-	// 		[(int)(player->pos.x)] != '1')
-	// 		player->pos.y -= player->direction.y * MOVE_SPEED;
-	// 	if (map->map[(int)(player->pos.y)]
-	// 		[(int)(player->pos.x - player->direction.x * MOVE_SPEED)] != '1')
-	// 		player->pos.x -= player->direction.x * MOVE_SPEED;
-	// }
+	else if (vc->player.s == 1)
+	{
+		if (vc->map.matrix[(int)(vc->player.pos_y - vc->player.direction_y * MOVE_SPEED)]
+			[(int)(vc->player.pos_x)] != '1')
+			vc->player.pos_y -= vc->player.direction_y * MOVE_SPEED;
+		if (vc->map.matrix[(int)(vc->player.pos_y)]
+			[(int)(vc->player.pos_x - vc->player.direction_x * MOVE_SPEED)] != '1')
+			vc->player.pos_x -= vc->player.direction_x * MOVE_SPEED;
+	}
 }
 
-// void	lado_movimento(t_vc *vc)
-// {
-
-// }
+void	lado_movimento(t_vc *vc)
+{
+	if (vc->player.d == 1)
+	{
+		if (vc->map.matrix[(int)(vc->player.pos_y + vc->player.direction_x * MOVE_SPEED)]
+			[(int)(vc->player.pos_x)] != '1')
+			vc->player.pos_y += vc->player.direction_x * MOVE_SPEED;
+		if (vc->map.matrix[(int)(vc->player.pos_y)]
+			[(int)(vc->player.pos_x - vc->player.direction_y * MOVE_SPEED)] != '1')
+			vc->player.pos_x -= vc->player.direction_y * MOVE_SPEED;
+	}
+	else if (vc->player.a == 1)
+	{
+		if (vc->map.matrix[(int)(vc->player.pos_y - vc->player.direction_x * MOVE_SPEED)]
+			[(int)(vc->player.pos_x)] != '1')
+			vc->player.pos_y -= vc->player.direction_x * MOVE_SPEED;
+		if (vc->map.matrix[(int)(vc->player.pos_y)]
+			[(int)(vc->player.pos_x + vc->player.direction_y * MOVE_SPEED)] != '1')
+			vc->player.pos_x += vc->player.direction_y * MOVE_SPEED;
+	}
+}
 
 void	move_camera(t_vc *vc)
 {
@@ -90,8 +89,8 @@ void	movemnt(t_vc *vc)
 {
 	if (vc->player.w == 1 || vc->player.s == 1)
 		frente_movimento(vc);
-	// if (vc->player.a == 1 || vc->player.d == 1)
-	// 	lado_movimento(vc);
+	if (vc->player.a == 1 || vc->player.d == 1)
+		lado_movimento(vc);
 	if (vc->player.o != 0)
 	move_camera(vc);
 }

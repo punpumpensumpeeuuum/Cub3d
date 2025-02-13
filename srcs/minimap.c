@@ -34,7 +34,7 @@ void	drawminimap(t_vc *vc)
 			if (vc->map.matrix_ff[i][j])
 			{
 				draw_rectangle(vc, vc->map.matrix_ff[i][j], i, j);
-				mlx_put_image_to_window(vc->mlx.mlx, vc->mlx.window, vc->minimap.player, vc->player.pos_x , vc->player.pos_y);
+				mlx_put_image_to_window(vc->mlx.mlx, vc->mlx.window, vc->minimap.player, (vc->player.pos_x + 0.5) * 16 , (vc->player.pos_y + 0.5) * 16 );
 			}
 			j++;
 		}

@@ -444,7 +444,6 @@ void init(char *file)
 
 int main(int ac, char **av)
 {
-	
 	if (!check_args(ac, av))
 		return (0);
 	init(av[1]);

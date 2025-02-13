@@ -43,24 +43,24 @@ void	dda_step_calc(t_vc *vc)
 	if (vc->ray.direction_x < 0)
 	{
 		vc->ray.step_x = -1;
-		vc->ray.distance_x = ((vc->player.pos_x / 16) - (vc->ray.pos_x / 16))
+		vc->ray.distance_x = ((vc->player.pos_x) - (vc->ray.pos_x))
 			* vc->ray.delta_dist_x;
 	}
 	else
 	{
 		vc->ray.step_x = 1;
-		vc->ray.distance_x = ((vc->ray.pos_x / 16) + 1.0 - (vc->player.pos_x / 16))
+		vc->ray.distance_x = ((vc->ray.pos_x) + 1.0 - (vc->player.pos_x))
 			* vc->ray.delta_dist_x;
 	}
 	if (vc->ray.direction_y < 0)
 	{
 		vc->ray.step_y = -1;
-		vc->ray.distance_y = ((vc->player.pos_y / 16) - (vc->ray.pos_y / 16)) * vc->ray.delta_dist_y;
+		vc->ray.distance_y = ((vc->player.pos_y) - (vc->ray.pos_y)) * vc->ray.delta_dist_y;
 	}
 	else
 	{
 		vc->ray.step_y = 1;
-		vc->ray.distance_y = ((vc->ray.pos_y / 16) + 1.0 - (vc->player.pos_y / 16))
+		vc->ray.distance_y = ((vc->ray.pos_y) + 1.0 - (vc->player.pos_y))
 			* vc->ray.delta_dist_y;
 	}
 }
@@ -84,7 +84,7 @@ void	dda_real_distance_calc(t_vc *vc)
 			vc->ray.pos_y += vc->ray.step_y;
 			vc->ray.side = 1;
 		}
-        if (vc->map.matrix[(int)(vc->ray.pos_y / 16) - 1][(int)(vc->ray.pos_x / 16)] == '1')
+        if (vc->map.matrix[(int)(vc->ray.pos_y)][(int)(vc->ray.pos_x)] == '1')
             hit = 1;
     }
 	if (vc->ray.side == 0)

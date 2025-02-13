@@ -93,8 +93,8 @@ typedef struct s_player
 	int				s;
 	int				d;
 	int				o;
-	int				pos_x;
-	int				pos_y;
+	double			pos_x;
+	double			pos_y;
 	int				grid_x;
 	int				grid_y;
 	double			plane_x;
