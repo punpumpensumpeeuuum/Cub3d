@@ -105,7 +105,10 @@ int	check_map_x(t_map *map, int y)
 	{	
 		if (!(map->matrix[y][x] == ' ' || map->matrix[y][x] == '1' ||
 		map->matrix[y][x] == '\n'))
+		{
+			printf("Error on check_map_x!\n");
 			return (1);
+		}
 		x++;
 	}
 	return (0);
@@ -124,11 +127,17 @@ int	check_map_y(t_map *map)
 		while (map->matrix_ff[y][x] == 'w')
 			x++;
 		if (map->matrix_ff[y][x] != '1')
+		{
+			printf("Error on check_map_y!\n");
 			return (1);
+		}
 		while (map->matrix_ff[y][x] != 'w')
 			x++;
 		if (map->matrix_ff[y][x - 1] != '1')
+		{
+			printf("Error on check_map_y!\n");
 			return (1);
+		}	
 		y++;
 	}
 	return (0);
@@ -149,7 +158,11 @@ int	check_0(t_map *map)
 			{
 				if (map->matrix_ff[y + 1][x] == 'w'
 				|| map->matrix_ff[y - 1][x] == 'w')
-					return (1);	
+				{
+					printf("Error on check_0!\n");
+					return (1);
+				}
+						
 			}
 			x++;
 		}
@@ -185,12 +198,35 @@ int valid_chars(t_map *map)
 	return (0);
 }
 
+int	check_textures(t_map *map)
+{
+	int	y;
+	int counter = 0;
+
+	y = 0;
+	counter = 0;
+	while (map->file[y])
+	{
+		if (ft_strncmp(map->file[y], "NO", 2) == 0 || ft_strncmp(map->file[y], "SO", 2) == 0
+		|| ft_strncmp(map->file[y], "EA", 2) == 0 || ft_strncmp(map->file[y], "WE", 2) == 0)
+			counter++;
+		y++;
+	}
+	if (counter != 4)
+	{
+		ft_putstr_fd("Error on textures!\n", 2);
+		return (1);
+
+	}
+	return (0);
+}
+
 int	check_map(t_map *map)
 {
 	if (!map->matrix_ff)
 		return (1);
 	if (valid_chars(map) == 0 && check_map_x(map, 0) == 0 && check_map_x(map, map->y - 1) == 0
-	&& check_map_y(map) == 0 && check_0(map) == 0)
+	&& check_map_y(map) == 0 && check_0(map) == 0 && check_textures(map) == 0)
 		return (0);
 	return (1);
 }
@@ -198,18 +234,25 @@ int	check_map(t_map *map)
 void	map_index(t_map *map)
 {
 	int	i;
+	int counter;
 
 	if (!map->file)
 		return ;
 	i = 0;
+	counter = 0;
 	while (i < map->file_heigth)
 	{
-		if (ft_strncmp(map->file[i], "1", 1) == 0)
+		if (map->file[i])
 		{
-			map->index = i;
-			while (map->file[i] != NULL)
+			if (ft_strncmp(map->file[i], "\n" , 1) == 0)
 				i++;
-			map->y = i - map->index;
+			counter++;
+			if (counter == 7)
+			{
+				map->index = i;
+				map->y = map->file_heigth - map->index;
+				return ;
+			}
 		}
 		i++;
 	}

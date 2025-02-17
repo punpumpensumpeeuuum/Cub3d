@@ -69,7 +69,6 @@ typedef struct s_map
 	char			**matrix_ff;
 	int				index;
 	int				file_heigth;
-	
 	int				x;
 	int				y;
 }		t_map;
@@ -165,6 +164,8 @@ typedef struct s_voidcollector
 	int				current_bee_image;
 }	t_vc;
 
+char	*ft_trim_and_strdup(const char *str, int start);
+int		check_textures(t_map *map);
 long	get_time_in_microseconds();
 void	move_bees(t_vc *vc);
 void	draw_bees(t_vc *vc);

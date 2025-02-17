@@ -76,6 +76,7 @@ char	**get_map(t_map *map)
 	if (!map->file)
 		return (NULL);
 	map_index(map);
+	printf("index = %d\n", map->index);
 	map->matrix = ft_calloc((map->y + 1), sizeof(char *));
 	if (!map->matrix)
 		return (NULL);

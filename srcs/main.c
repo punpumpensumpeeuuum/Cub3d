@@ -122,6 +122,13 @@ int andar(t_vc *vc)
 	return (0);
 }
 
+char	*ft_trim_and_strdup(const char *str, int start)
+{
+	while (str[start] && (str[start] == ' ' || str[start] == '\t'))
+		start++;
+	return (ft_strdup(str + start));
+}
+
 void	alloc_textures1(t_vc *vc)
 {
 	int y;
@@ -134,13 +141,13 @@ void	alloc_textures1(t_vc *vc)
 		if (vc->map.file[y][len - 1] == '\n')
 			vc->map.file[y][len - 1] = '\0';
 		if (ft_strncmp(vc->map.file[y], "NO", 2) == 0)
-			vc->map_info.no = ft_strdup(vc->map.file[y] + 3);
+			vc->map_info.no = ft_trim_and_strdup(vc->map.file[y], 2);
 		else if (ft_strncmp(vc->map.file[y], "SO", 2) == 0)
-			vc->map_info.so = ft_strdup(vc->map.file[y] + 3);
+			vc->map_info.so = ft_trim_and_strdup(vc->map.file[y], 2);
 		else if (ft_strncmp(vc->map.file[y], "EA", 2) == 0)
-			vc->map_info.ea = ft_strdup(vc->map.file[y] + 3);
+			vc->map_info.ea = ft_trim_and_strdup(vc->map.file[y], 2);
 		else if (ft_strncmp(vc->map.file[y], "WE", 2) == 0)
-			vc->map_info.we = ft_strdup(vc->map.file[y] + 3);
+			vc->map_info.we = ft_trim_and_strdup(vc->map.file[y], 2);
 		y++;
 	}
 }
@@ -154,7 +161,7 @@ void load_texture(t_data *texture, void *mlx, char *file_path)
 	}
 	if (access(file_path, F_OK) != 0)
 	{
-   		printf("Texture file not found: >%s<\n", file_path);
+   		printf("Textureeee file not found: >%s<\n", file_path);
     	exit(1);
 	}
     texture->img_ptr = mlx_xpm_file_to_image(mlx, file_path, &texture->img_size_x, &texture->img_size_y);
@@ -378,9 +385,14 @@ void init(char *file)
     {
         printf("%s", vc->map.file[i]);
     }
-    printf("\n\n");
+    printf("\n\n --------------------------------- \n\n");
     get_width(&vc->map);
     second_map(&vc->map);
+	i = -1;
+    while (vc->map.matrix_ff[++i])
+    {
+        printf("%s", vc->map.matrix_ff[i]);
+    }
     if (check_map(&vc->map) == 1)
 	{
 		dprintf(2, "HALLOHA\n");
@@ -449,3 +461,5 @@ int main(int ac, char **av)
 	init(av[1]);
 	return (0);
 }
+
+// mapa nao funciona sem espaços na frente e texturas!
