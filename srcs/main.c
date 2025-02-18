@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:19 by jomendes          #+#    #+#             */
-/*   Updated: 2025/02/10 13:26:07 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:39:24 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -376,34 +376,36 @@ void init(char *file)
 	vc->map.x = 0;
     vc->map.file = get_file(file, &vc->map);
     vc->map.matrix = get_map(&vc->map);
-    if (get_floor(&vc->map, &vc->map_info) == 1)
-        exit(1);
+    if (get_floor(&vc->map, &vc->map_info) == 1 || !vc->map.matrix || !vc->map.file)
+	{
+		free_split(vc->map.file);
+		exit(1);
+	}
     if (get_ceiling(&vc->map, &vc->map_info) == 1)
 		exit(1);
     int i = -1;
-    while (vc->map.file[++i])
+	while (vc->map.matrix[++i])
     {
-        printf("%s", vc->map.file[i]);
+        printf("%s", vc->map.matrix[i]);
     }
-    printf("\n\n --------------------------------- \n\n");
+    // while (vc->map.matrix[++i])
+    // {
+    //     printf("%s", vc->map.matrix[i]);
+    // }
+    // printf("\n\n --------------------------------- \n\n");
     get_width(&vc->map);
     second_map(&vc->map);
-	i = -1;
-    while (vc->map.matrix_ff[++i])
-    {
-        printf("%s", vc->map.matrix_ff[i]);
-    }
+	// i = -1;
     if (check_map(&vc->map) == 1)
 	{
 		dprintf(2, "HALLOHA\n");
         exit(1);
 	}
-	printf("oi\n");
-	i = -1;
-	while (vc->map.matrix_ff[++i])
-	{
-		printf("%s", vc->map.matrix_ff[i]);
-	}
+	// i = -1;
+	// while (vc->map.matrix_ff[++i])
+	// {
+	// 	printf("%s", vc->map.matrix_ff[i]);
+	// }
     vc->mlx.mlx = mlx_init();
 	vc->minimap.player = mlx_xpm_file_to_image(vc->mlx.mlx, "srcs/xpm/playerminimap.xpm", &vc->mlx.pixelx, &vc->mlx.pixely);
 	vc->minimap.wall = mlx_xpm_file_to_image(vc->mlx.mlx, "srcs/xpm/wallminimap.xpm", &vc->mlx.pixelx, &vc->mlx.pixely);
@@ -447,10 +449,6 @@ void init(char *file)
 	printf("mlx_hook result: %d\n", result);
 	mlx_do_key_autorepeatoff(vc->mlx.mlx);
     mlx_loop(vc->mlx.mlx);
-	if (vc->map.file) {
-        free_split(vc->map.file);
-        vc->map.file = NULL;
-	}
 }
 
 

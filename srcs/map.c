@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:17 by jomendes          #+#    #+#             */
-/*   Updated: 2024/12/10 10:46:59 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:38:23 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ char	**get_map(t_map *map)
 	if (!map->file)
 		return (NULL);
 	map_index(map);
-	printf("index = %d\n", map->index);
 	map->matrix = ft_calloc((map->y + 1), sizeof(char *));
 	if (!map->matrix)
 		return (NULL);
@@ -88,5 +87,10 @@ char	**get_map(t_map *map)
 		map->index++;
 	}
 	map->matrix[i] = NULL;
+	if (check_map_x(map, 0) != 0)
+	{
+		free (map->matrix);
+		return (NULL);
+	}
 	return (map->matrix);
 }

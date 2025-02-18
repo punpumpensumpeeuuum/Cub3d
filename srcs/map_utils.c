@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:49:40 by elemesmo          #+#    #+#             */
-/*   Updated: 2025/02/07 12:08:38 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:28:57 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,17 +62,22 @@ void	second_map(t_map *map)
 		return ;
 	map->matrix_ff[y] = create_top_bottom(map);
 	y++;
-	while (y <= map->y)
+	// printf("valor do map->y = %d\n", map->y);
+	// while (y <= map->y)
 	{
 		map->matrix_ff[y] = malloc(map->x + 4);
 		if (!map->matrix_ff[y])
 			return ;
 		x = 0;
 		map->matrix_ff[y][x] = 'w';
+		// printf("valor do x = %d\n", x);
+		// printf("valor do map->x = %d\n", map->x);
 		while (x <= map->x)
 		{
+			// printf("map->matrix[y - 1][x] = >%c<\n", map->matrix[y - 1][x]);
 			while (map->matrix[y - 1][x] == ' ')
 			{
+				printf("ENTROU\n");
 				map->matrix_ff[y][x + 1] = 'w';
 				x++;
 			}
@@ -102,7 +107,7 @@ int	check_map_x(t_map *map, int y)
 
 	x = 0;
 	while (map->matrix[y][x])
-	{	
+	{
 		if (!(map->matrix[y][x] == ' ' || map->matrix[y][x] == '1' ||
 		map->matrix[y][x] == '\n'))
 		{
@@ -116,28 +121,35 @@ int	check_map_x(t_map *map, int y)
 
 int	check_map_y(t_map *map)
 {
-	int	y;
-	int	x;
+	int y;
+	int x;
 
-	y = 2;
+	y = 0;
 	x = 0;
-	while (map->matrix_ff[y][x] && y < map->y)
+	while (y < map->y)
 	{
-		x = 0;
-		while (map->matrix_ff[y][x] == 'w')
+		while (map->matrix[y][x] == ' ')
 			x++;
-		if (map->matrix_ff[y][x] != '1')
+		if (map->matrix[y][x] == '0')
 		{
-			printf("Error on check_map_y!\n");
+			printf("%d\n", y);
+			ft_putstr_fd("Errooor on check_mapeee_y\n", 2);
 			return (1);
 		}
-		while (map->matrix_ff[y][x] != 'w')
-			x++;
-		if (map->matrix_ff[y][x - 1] != '1')
+		y++;
+		x = 0;
+	}
+	y = 0;
+	while (y < map->y)
+	{
+		printf("c = .%d.\n", map->matrix[y][ft_strlen(map->matrix[y]) - 2]);
+		if ((map->matrix[y][0] != '1' && map->matrix[y][0] != ' ') 
+		|| (map->matrix[y][ft_strlen(map->matrix[y]) - 2] != '1'
+		&& map->matrix[y][ft_strlen(map->matrix[y]) - 2] != ' '))
 		{
-			printf("Error on check_map_y!\n");
+			ft_putstr_fd("Error on check_map_y\n", 2);
 			return (1);
-		}	
+		}
 		y++;
 	}
 	return (0);
@@ -246,7 +258,8 @@ void	map_index(t_map *map)
 		{
 			if (ft_strncmp(map->file[i], "\n" , 1) == 0)
 				i++;
-			counter++;
+			if (ft_strncmp(map->file[i], "\n" , 1) != 0)
+				counter++;
 			if (counter == 7)
 			{
 				map->index = i;
