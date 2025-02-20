@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:19 by jomendes          #+#    #+#             */
-/*   Updated: 2025/02/18 16:39:24 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:57:47 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,22 +97,22 @@ long	get_time_in_microseconds()
 
 int andar(t_vc *vc)
 {
-	static long last_time = 0;
-	long current_time = get_time_in_microseconds();
+	// static long last_time = 0;
+	// long current_time = get_time_in_microseconds();
 
-	if (current_time - last_time > 20000)
-	{
-		if (vc->current_bee_image == 0)
-			vc->current_bee_image = 1;
-		else
-			vc->current_bee_image = 0;
-	}
-	last_time = current_time;
+	// if (current_time - last_time > 20000)
+	// {
+	// 	if (vc->current_bee_image == 0)
+	// 		vc->current_bee_image = 1;
+	// 	else
+	// 		vc->current_bee_image = 0;
+	// }
+	// last_time = current_time;
 	movemnt(vc);
-	move_bees(vc);
+	// move_bees(vc);
 	my_img_clear(*vc->canva);
 	dda_style(vc);
-	draw_bees(vc);
+	// draw_bees(vc);
 	// mlx_clear_window(vc->mlx.mlx, vc->mlx.window);
 	if (vc->minimap.onoff == 1)
 		drawminimap(vc);
@@ -309,7 +309,6 @@ void	free_split(char **str)
 		i++;
 	}
 	free(str);
-	str = NULL;
 }
 
 void free_mlx(t_vc *vc)
@@ -335,12 +334,16 @@ void free_mlx(t_vc *vc)
 void	free_game(t_vc *vc)
 {
     if (vc->map.matrix) {
-        free_split(vc->map.matrix);
+        free(vc->map.matrix);
         vc->map.matrix = NULL;
     }
     if (vc->map.matrix_ff) {
         free_split(vc->map.matrix_ff);
         vc->map.matrix_ff = NULL;
+    }
+	if (vc->map.file) {
+        free_split(vc->map.file);
+        vc->map.file = NULL;
     }
 	if (vc->map_info.ea_texture && vc->map_info.ea_texture->img_ptr)
 		mlx_destroy_image(vc->mlx.mlx, vc->map_info.ea_texture->img_ptr);
@@ -378,11 +381,14 @@ void init(char *file)
     vc->map.matrix = get_map(&vc->map);
     if (get_floor(&vc->map, &vc->map_info) == 1 || !vc->map.matrix || !vc->map.file)
 	{
-		free_split(vc->map.file);
+		free_game(vc);
 		exit(1);
 	}
     if (get_ceiling(&vc->map, &vc->map_info) == 1)
+	{
+		free_game(vc);
 		exit(1);
+	}
     int i = -1;
 	while (vc->map.matrix[++i])
     {
@@ -398,6 +404,7 @@ void init(char *file)
 	// i = -1;
     if (check_map(&vc->map) == 1)
 	{
+		free_game(vc);
 		dprintf(2, "HALLOHA\n");
         exit(1);
 	}
@@ -454,9 +461,13 @@ void init(char *file)
 
 int main(int ac, char **av)
 {
+	// t_vc *vc;
+
+	// vc = get_data();
 	if (!check_args(ac, av))
 		return (0);
 	init(av[1]);
+	// free_game(vc);
 	return (0);
 }
 

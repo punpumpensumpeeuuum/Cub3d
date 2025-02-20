@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 15:43:22 by dinda-si          #+#    #+#             */
-/*   Updated: 2025/02/10 12:47:10 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:23:55 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ typedef struct s_voidcollector
 	int				current_bee_image;
 }	t_vc;
 
+int		where_is_player(t_map *map);
 char	*ft_trim_and_strdup(const char *str, int start);
 int		check_textures(t_map *map);
 long	get_time_in_microseconds();
