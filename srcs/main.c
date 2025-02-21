@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:19 by jomendes          #+#    #+#             */
-/*   Updated: 2025/02/21 14:58:18 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/21 15:06:24 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,12 @@ int	get_floor_color(t_map_info *info)
 	info->floor_color.r = ft_atoi(floor[0]);
 	info->floor_color.g = ft_atoi(floor[1]);
 	info->floor_color.b =  ft_atoi(floor[2]);
+	free_split(floor);
 	if (info->floor_color.r < 0 || info->floor_color.r > 255 ||
 	info->floor_color.g < 0 || info->floor_color.g > 255 ||
 	info->floor_color.b < 0 || info->floor_color.b > 255)
 		return (1);
 	color = (info->floor_color.r << 16 | info->floor_color.g << 8 | info->floor_color.b);
-	free_split(floor);
 	return (color);
 }
 
@@ -89,12 +89,12 @@ int	get_ceiling_color(t_map_info *info)
 	info->ceiling_color.r = ft_atoi(ceiling[0]);
 	info->ceiling_color.g = ft_atoi(ceiling[1]);
 	info->ceiling_color.b =  ft_atoi(ceiling[2]);
+	free_split(ceiling);
 	if (info->ceiling_color.r < 0 || info->ceiling_color.r > 255 ||
 	info->ceiling_color.g < 0 || info->ceiling_color.g > 255 ||
 	info->ceiling_color.b < 0 || info->ceiling_color.b > 255)
 		return (1);
 	color = (info->ceiling_color.r << 16 | info->ceiling_color.g << 8 | info->ceiling_color.b);
-	free_split(ceiling);
 	return (color);
 }
 

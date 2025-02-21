@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:49:40 by elemesmo          #+#    #+#             */
-/*   Updated: 2025/02/21 12:46:17 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/21 15:07:57 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	second_map(t_map *map)
 			return ;
 		x = 0;
 		map->matrix_ff[y][x] = 'w';
-		while (x <= map->x && map->matrix[y][x])
+		while (x <= map->x && map->matrix[y][x] && map->matrix_ff[y][x])
 		{
 			while (map->matrix[y - 1][x] == ' ')
 			{
