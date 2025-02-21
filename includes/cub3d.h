@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 15:43:22 by dinda-si          #+#    #+#             */
-/*   Updated: 2025/02/20 15:23:55 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/21 14:44:34 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,20 @@ typedef struct s_minimap
 
 typedef struct s_rgb
 {
-    int				r;
-    int				g;
-    int				b;
+	int				r;
+	int				g;
+	int				b;
 }	t_rgb;
 
 typedef struct s_data
 {
 	void			*img_ptr;
 	char			*addr;
-	int	 		bits_per_pixel;
-	int	 		line_length;
+	int				bits_per_pixel;
+	int				line_length;
 	int				endian;
-	int	 		img_size_x;
-	int	 		img_size_y;
+	int				img_size_x;
+	int				img_size_y;
 }			t_data;
 
 typedef struct s_map
@@ -73,7 +73,7 @@ typedef struct s_map
 	int				y;
 }		t_map;
 
-typedef struct	s_mlx
+typedef struct s_mlx
 {
 	void			*window;
 	void			*mlx;
@@ -81,7 +81,6 @@ typedef struct	s_mlx
 	int				y;
 	int				pixelx;
 	int				pixely;
-	
 }	t_mlx;
 
 typedef struct s_player
@@ -123,7 +122,7 @@ typedef struct s_ray
 	int				step_y;
 	int				x_texture;
 	int				y_texture;
-} t_ray;
+}					t_ray;
 
 typedef struct s_map_info
 {
@@ -139,14 +138,13 @@ typedef struct s_map_info
 	t_data			*ea_texture;
 	t_rgb			ceiling_color;
 	t_rgb			floor_color;
-} t_map_info;
+}					t_map_info;
 
 typedef struct s_enemy
 {
-    double x;
-    double y;
-} t_enemy;
-
+	double	x;
+	double	y;
+}	t_enemy;
 
 typedef struct s_voidcollector
 {
@@ -164,13 +162,10 @@ typedef struct s_voidcollector
 	int				current_bee_image;
 }	t_vc;
 
+int		check_closed(t_map *map);
 int		where_is_player(t_map *map);
 char	*ft_trim_and_strdup(const char *str, int start);
 int		check_textures(t_map *map);
-long	get_time_in_microseconds();
-void	move_bees(t_vc *vc);
-void	draw_bees(t_vc *vc);
-void	find_enemies(t_vc *vc);
 int		my_pixel_get(t_data *data, int x, int y);
 int		valid_chars(t_map *map);
 void	free_split(char **str);
@@ -178,17 +173,16 @@ int		close_window(t_vc *vc);
 int		coma_counter(char *str);
 int		rgb_def_check(char *str);
 int		check_args(int ac, char **av);
-char    **get_map(t_map *map);
+char	**get_map(t_map *map);
 void	error(char *str);
 void	drawminimap(t_vc *vc);
-void 	draw_rectangle(t_vc *vc, char c, int i, int j);
+void	draw_rectangle(t_vc *vc, char c, int i, int j);
 char	**get_file(char *file, t_map *map);
 int		get_file_heigth(char *file);
 void	get_width(t_map *map);
 char	*create_top_bottom(t_map *map);
 void	second_map(t_map *map);
 int		check_map_x(t_map *map, int y);
-int		check_map_y(t_map *map);
 int		check_map(t_map *map);
 int		check_0(t_map *map);
 void	map_index(t_map *map);
@@ -199,13 +193,28 @@ void	player_pos(t_map *map, t_vc *vc);
 int		get_floor_color(t_map_info *info);
 int		get_ceiling_color(t_map_info *info);
 void	init_images(t_vc *vc);
+void	place_player_aux(t_vc *vc, int *i, int *j);
+void	player_south(t_vc *vc, int i, int j);
+void	player_east(t_vc *vc, int i, int j);
+void	player_west(t_vc *vc, int i, int j);
+void	my_img_clear(t_data data);
+char	*ft_trim_and_strdup(const char *str, int start);
+void	alloc_textures1(t_vc *vc);
+void	load_texture(t_data *texture, void *mlx, char *file_path);
+void	alloc_textures(t_vc *vc);
+int		rgb_def_check(char *str);
+int		closegame(t_vc *vc);
+int		keypress(int keycode, t_vc *vc);
+int		keyunpress(int keycode, t_vc *vc);
+void	my_img_clear(t_data data);
 
 // raycasting
 void	dda_style(t_vc *vc);
 void	dda_step_calc(t_vc *vc);
 void	dda_real_distance_calc(t_vc *vc);
 void	dda_wall_height(t_ray *ray);
-void	dda_side_selector(t_vc *vc, t_ray *ray, t_player *player, t_map_info *info);
+void	dda_side_selector(t_vc *vc, t_ray *ray, t_player *player,
+			t_map_info *info);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int		get_raycolor(int tex_x, int tex_y, t_data *data);
 void	draw_walls(t_vc *vc, t_ray *ray, t_data *texture);

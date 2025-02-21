@@ -6,13 +6,13 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:17 by jomendes          #+#    #+#             */
-/*   Updated: 2025/02/18 11:38:23 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/21 12:39:59 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-int		check_name(char	*str)
+int	check_name(char	*str)
 {
 	int	fd;
 	int	i;
@@ -42,7 +42,7 @@ int	check_args(int ac, char **av)
 		return (1);
 	if (ac > 2)
 		error("To many arguments\n");
-	return (0);	
+	return (0);
 }
 
 int	map_heigth(char *file)

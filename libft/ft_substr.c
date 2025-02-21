@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 09:43:19 by jomendes          #+#    #+#             */
-/*   Updated: 2024/04/08 15:33:59 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/21 11:57:13 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,5 @@ char	*ft_substr(char const *s, int start, int len)
 		j++;
 	}
 	result[j] = '\0';
-	return (result); 
+	return (result);
 }
