@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 15:43:22 by dinda-si          #+#    #+#             */
-/*   Updated: 2025/02/21 14:44:34 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/21 16:24:44 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,16 +183,14 @@ void	get_width(t_map *map);
 char	*create_top_bottom(t_map *map);
 void	second_map(t_map *map);
 int		check_map_x(t_map *map, int y);
-int		check_map(t_map *map);
+int		check_map(t_map *map, t_vc *vc);
 int		check_0(t_map *map);
 void	map_index(t_map *map);
 void	placeplayer(t_vc *vc);
 int		get_floor(t_map *map, t_map_info *info);
 int		get_ceiling(t_map *map, t_map_info *info);
-void	player_pos(t_map *map, t_vc *vc);
 int		get_floor_color(t_map_info *info);
 int		get_ceiling_color(t_map_info *info);
-void	init_images(t_vc *vc);
 void	place_player_aux(t_vc *vc, int *i, int *j);
 void	player_south(t_vc *vc, int i, int j);
 void	player_east(t_vc *vc, int i, int j);
@@ -207,6 +205,11 @@ int		closegame(t_vc *vc);
 int		keypress(int keycode, t_vc *vc);
 int		keyunpress(int keycode, t_vc *vc);
 void	my_img_clear(t_data data);
+void	checkcolors(t_vc *vc);
+void	anotherinit(t_vc *vc);
+void	free_game(t_vc *vc);
+void	destroy_map(t_vc *vc);
+void	free_mlx(t_vc *vc);
 
 // raycasting
 void	dda_style(t_vc *vc);

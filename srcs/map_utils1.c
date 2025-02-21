@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_utils1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 13:42:21 by jomendes          #+#    #+#             */
-/*   Updated: 2025/02/21 12:46:21 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/21 15:53:10 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ char	**get_file(char *file, t_map *map)
 
 	fd = open(file, O_RDONLY);
 	map->file_heigth = get_file_heigth(file);
-	if (map->file_heigth == -1)
+	if (map->file_heigth == -1 || fd < 3)
 	{
 		error("Can't open the file\n");
 		return (NULL);
@@ -115,11 +115,6 @@ char	**get_file(char *file, t_map *map)
 	if (!all_file)
 		return (NULL);
 	line = 0;
-	if (fd < 3)
-	{
-		error("Map not found\n");
-		return (NULL);
-	}
 	while (line < map->file_heigth)
 	{
 		row = get_next_line(fd);

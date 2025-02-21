@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 17:08:09 by jomendes          #+#    #+#             */
-/*   Updated: 2025/02/21 13:39:11 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/21 16:10:05 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,51 +25,6 @@ int	closegame(t_vc *vc)
 	exit(0);
 }
 
-int	keypress(int keycode, t_vc *vc)
-{
-	if (keycode == 65307)
-		closegame(vc);
-	else if (keycode == 109)
-	{
-		if (vc->minimap.onoff == 1)
-		{
-			vc->minimap.onoff = 0;
-			return (0);
-		}
-		vc->minimap.onoff = 1;
-	}
-	else if (keycode == 'w')
-		vc->player.w = 1;
-	else if (keycode == 'a')
-		vc->player.a = 1;
-	else if (keycode == 's')
-		vc->player.s = 1;
-	else if (keycode == 'd')
-		vc->player.d = 1;
-	else if (keycode == L_ARROW)
-		vc->player.o = 1;
-	else if (keycode == R_ARROW)
-		vc->player.o = 2;
-	return (0);
-}
-
-int	keyunpress(int keycode, t_vc *vc)
-{
-	if (keycode == 'w')
-		vc->player.w = 0;
-	else if (keycode == 'a')
-		vc->player.a = 0;
-	else if (keycode == 's')
-		vc->player.s = 0;
-	else if (keycode == 'd')
-		vc->player.d = 0;
-	else if (keycode == L_ARROW)
-		vc->player.o = 0;
-	else if (keycode == R_ARROW)
-		vc->player.o = 0;
-	return (0);
-}
-
 void	my_img_clear(t_data data)
 {
 	int	j;
@@ -85,5 +40,42 @@ void	my_img_clear(t_data data)
 			i++;
 		}
 		j++;
+	}
+}
+
+void	free_split(char **str)
+{
+	int	i;
+
+	i = 0;
+	if (str == NULL)
+		return ;
+	while (str[i])
+	{
+		free(str[i]);
+		str[i] = NULL;
+		i++;
+	}
+	free(str);
+}
+
+void	free_mlx(t_vc *vc)
+{
+	if (vc->map_info.no)
+		free(vc->map_info.no);
+	if (vc->map_info.so)
+		free(vc->map_info.so);
+	if (vc->map_info.ea)
+		free(vc->map_info.ea);
+	if (vc->map_info.we)
+		free(vc->map_info.we);
+	if (vc->canva)
+		free(vc->canva);
+	if (vc->mlx.window)
+		mlx_destroy_window(vc->mlx.mlx, vc->mlx.window);
+	if (vc->mlx.mlx)
+	{
+		mlx_destroy_display(vc->mlx.mlx);
+		free(vc->mlx.mlx);
 	}
 }

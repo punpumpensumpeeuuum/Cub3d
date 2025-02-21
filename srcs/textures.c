@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   textures.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 13:41:52 by jomendes          #+#    #+#             */
-/*   Updated: 2025/02/21 13:42:45 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/21 15:51:04 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,16 @@ void	alloc_textures(t_vc *vc)
 	vc->map_info.ea_texture = malloc(sizeof(t_data));
 	vc->map_info.we_texture = malloc(sizeof(t_data));
 	vc->canva = malloc(sizeof(t_data));
-	if (!vc->map_info.no_texture || !vc->map_info.so_texture || !vc->map_info.ea_texture || !vc->map_info.we_texture)
+	if (!vc->map_info.no_texture || !vc->map_info.so_texture || \
+			!vc->map_info.ea_texture || !vc->map_info.we_texture)
 	{
 		printf("Error: failed to allocate memory for textures.\n");
 		exit(1);
 	}
 	vc->canva->img_ptr = mlx_new_image(vc->mlx.mlx, X_SCREEN, Y_SCREEN);
-	vc->canva->addr = mlx_get_data_addr(vc->canva->img_ptr, &vc->canva->bits_per_pixel, &vc->canva->line_length, &vc->canva->endian);
+	vc->canva->addr = mlx_get_data_addr(vc->canva->img_ptr, \
+			&vc->canva->bits_per_pixel, &vc->canva->line_length, \
+				&vc->canva->endian);
 	vc->canva->img_size_x = X_SCREEN;
 	vc->canva->img_size_y = Y_SCREEN;
 	load_texture(vc->map_info.no_texture, vc->mlx.mlx, vc->map_info.no);
@@ -94,7 +97,7 @@ void	alloc_textures(t_vc *vc)
 
 int	rgb_def_check(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -110,7 +113,6 @@ int	rgb_def_check(char *str)
 			ft_putstr_fd("Tryharder to break this\n", 2);
 			return (1);
 		}
-			
 	}
 	return (0);
 }

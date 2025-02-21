@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:03:05 by jomendes          #+#    #+#             */
-/*   Updated: 2025/02/21 12:04:26 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/02/21 15:48:54 by dinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,6 @@ int	my_pixel_get(t_data *data, int x, int y)
 	return (*(unsigned int *)dst);
 }
 
-int	get_raycolor(int tex_x, int tex_y, t_data *data)
-{
-	int	color;
-	int	offset;
-
-	offset = tex_y * data->line_length + tex_x * (data->bits_per_pixel / 8);
-	color = *(int *)(data->addr + offset);
-	return (color);
-}
-
 void	draw_walls(t_vc *vc, t_ray *ray, t_data *texture)
 {
 	double	step;
@@ -46,14 +36,18 @@ void	draw_walls(t_vc *vc, t_ray *ray, t_data *texture)
 	int		color;
 	int		y;
 
-	step = 1.0 * texture->img_size_y / ray->line_height;
-	texture_pos = (ray->wall_start - Y_SCREEN / 2
-			+ ray->line_height / 2) * step;
+	step = 1.0 * 64 / ray->line_height;
+	texture_pos = (ray->wall_start - (Y_SCREEN / 2
+				+ ray->line_height / 2)) * step;
+	if (texture_pos < 0)
+		texture_pos = 0;
 	y = ray->wall_start;
 	while (y < ray->wall_end)
 	{
-		texture_y = (int)texture_pos & (texture->img_size_y - 1);
+		texture_y = (int)texture_pos & (64 - 1);
 		color = my_pixel_get(texture, ray->id, texture_y);
+		if (ray->side == 1)
+			color = (color >> 1) & 0x7F7F7F;
 		my_mlx_pixel_put(vc->canva, ray->id, y, color);
 		texture_pos += step;
 		y++;
