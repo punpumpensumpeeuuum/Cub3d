@@ -33,19 +33,29 @@ void	draw_walls(t_vc *vc, t_ray *ray, t_data *texture)
 	double	step;
 	double	texture_pos;
 	int		texture_y;
+	int		texture_x;
 	int		color;
 	int		y;
+	double	wall_x;
 
 	step = 1.0 * 64 / ray->line_height;
 	texture_pos = (ray->wall_start - (Y_SCREEN / 2
 				+ ray->line_height / 2)) * step;
 	if (texture_pos < 0)
 		texture_pos = 0;
+	if (ray->side == 0)
+		wall_x = vc->player.pos_y + ray->real_size * ray->direction_y;
+	else
+		wall_x = vc->player.pos_x + ray->real_size * ray->direction_x;
+	wall_x -= floor(wall_x);
+	texture_x = (int)(wall_x * texture->img_size_x);
+	if ((ray->side == 0 && ray->direction_x > 0) || (ray->side == 1 && ray->direction_y < 0))
+		texture_x = texture->img_size_x - texture_x - 1;
 	y = ray->wall_start;
 	while (y < ray->wall_end)
 	{
-		texture_y = (int)texture_pos & (64 - 1);
-		color = my_pixel_get(texture, ray->id, texture_y);
+		texture_y = (int)texture_pos % texture->img_size_y;
+		color = my_pixel_get(texture, texture_x, texture_y);
 		if (ray->side == 1)
 			color = (color >> 1) & 0x7F7F7F;
 		my_mlx_pixel_put(vc->canva, ray->id, y, color);
