@@ -3,34 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   map_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:54:04 by dinda-si          #+#    #+#             */
-/*   Updated: 2025/02/21 16:23:01 by dinda-si         ###   ########.fr       */
+/*   Updated: 2025/03/03 13:52:30 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-void	get_width(t_map *map)
-{
-	int	i;
-	int	j;
-	int	width;
-
-	i = 0;
-	width = 0;
-	while (map->matrix[i])
-	{
-		j = 0;
-		while (map->matrix[i][j] != '\0' && map->matrix[i][j] != '\n')
-			j++;
-		if (width < j)
-			width = j;
-		i++;
-	}
-	map->x = width;
-}
 
 char	*create_top_bottom(t_map *map)
 {
@@ -98,6 +78,34 @@ int	where_is_player(t_map *map)
 	return (1);
 }
 
+int	one_player(t_map *map)
+{
+	int	x;
+	int	y;
+	int	counter;
+
+	y = 0;
+	counter = 0;
+	while (map->matrix[y])
+	{
+		x = 0;
+		while (map->matrix[y][x])
+		{
+			if (map->matrix[y][x] == 'N'
+			|| map->matrix[y][x] == 'S'
+			|| map->matrix[y][x] == 'E'
+			|| map->matrix[y][x] == 'W')
+				counter++;
+			x++;
+		}
+		y++;
+	}
+	if (counter == 1)
+		return (0);
+	else
+		return (1);
+}
+
 int	check_map(t_map *map, t_vc *vc)
 {
 	if (!map->matrix_ff)
@@ -110,9 +118,10 @@ int	check_map(t_map *map, t_vc *vc)
 		check_map_x(map, map->y - 1) == 0
 		&& check_closed(map) == 0 && check_0(map) == 0 && \
 		check_textures(map) == 0
-		&& where_is_player(map) == 0)
+		&& where_is_player(map) == 0 && one_player(map) == 0)
 		return (0);
 	free_game(vc);
+	ft_putstr_fd("Error in map!\n", 2);
 	exit(1);
 	return (1);
 }

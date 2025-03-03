@@ -118,17 +118,17 @@ void	dda_side_selector(t_vc *vc, t_ray *ray, \
 	else
 		wall_x = player->pos_x + ray->real_size * ray->direction_x;
 	wall_x -= floor(wall_x);
-	ray->x_texture = (int)(wall_x * 64);
+	ray->texture_x = (int)(wall_x * 64);
 	if (ray->side == 0 && ray->direction_x > 0)
-		ray->x_texture = 64 - ray->x_texture - 1;
+		ray->texture_x = 64 - ray->texture_x - 1;
 	if (ray->side == 1 && ray->direction_y < 0)
-		ray->x_texture = 64 - ray->x_texture - 1;
+		ray->texture_x = 64 - ray->texture_x - 1;
 	if (ray->side == 0 && ray->direction_x > 0)
-		draw_walls(vc, ray, info->ea_texture);
+		draw_walls(vc, info->ea_texture);
 	else if (ray->side == 0 && ray->direction_x < 0)
-		draw_walls(vc, ray, info->we_texture);
+		draw_walls(vc, info->we_texture);
 	else if (ray->side == 1 && ray->direction_y > 0)
-		draw_walls(vc, ray, info->so_texture);
+		draw_walls(vc, info->so_texture);
 	else if (ray->side == 1 && ray->direction_y < 0)
-		draw_walls(vc, ray, info->no_texture);
+		draw_walls(vc, info->no_texture);
 }

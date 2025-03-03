@@ -3,14 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:19 by jomendes          #+#    #+#             */
-/*   Updated: 2025/02/21 16:24:13 by dinda-si         ###   ########.fr       */
+/*   Updated: 2025/03/03 13:51:40 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+
+void	get_width(t_map *map)
+{
+	int	i;
+	int	j;
+	int	width;
+
+	i = 0;
+	width = 0;
+	while (map->matrix[i])
+	{
+		j = 0;
+		while (map->matrix[i][j] != '\0' && map->matrix[i][j] != '\n')
+			j++;
+		if (width < j)
+			width = j;
+		i++;
+	}
+	map->x = width;
+}
 
 t_vc	*get_data(void)
 {

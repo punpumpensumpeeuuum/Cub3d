@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keys.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 16:08:41 by dinda-si          #+#    #+#             */
-/*   Updated: 2025/02/21 16:15:21 by dinda-si         ###   ########.fr       */
+/*   Updated: 2025/03/03 15:58:12 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,24 @@ int	keyunpress(int keycode, t_vc *vc)
 	else if (keycode == R_ARROW)
 		vc->player.o = 0;
 	return (0);
+}
+
+void	draw_floor_ceiling(t_vc *vc, t_ray *ray)
+{
+	int	y;
+
+	y = 0;
+	while (y < ray->wall_start)
+	{
+		my_mlx_pixel_put(vc->canva, ray->id, y, \
+			get_ceiling_color(&vc->map_info));
+		y++;
+	}
+	y = ray->wall_end + 1;
+	while (y < Y_SCREEN)
+	{
+		my_mlx_pixel_put(vc->canva, ray->id, y, \
+			get_floor_color(&vc->map_info));
+		y++;
+	}
 }

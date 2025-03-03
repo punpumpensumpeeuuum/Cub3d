@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 13:49:23 by jomendes          #+#    #+#             */
-/*   Updated: 2025/02/21 12:36:45 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/03/03 10:57:18 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ void	place_player_aux(t_vc *vc, int *i, int *j)
 {
 	if (vc->map.matrix[*i][*j] == 'N')
 	{
-		printf("valor do i = %d\n", *i);
-		printf("valor do j = %d\n", *j);
 		vc->player.grid_x = *j;
 		vc->player.grid_y = *i;
 		vc->player.facing = 270;
@@ -85,8 +83,6 @@ void	placeplayer(t_vc *vc)
 	while (vc->map.matrix[i])
 	{
 		j = 0;
-		printf("valor do i antes = %d\n", i);
-		printf("valor do j antes = %d\n", j);
 		while (j < vc->map.matrix[i][j])
 		{
 			place_player_aux(vc, &i, &j);

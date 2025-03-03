@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 15:49:40 by elemesmo          #+#    #+#             */
-/*   Updated: 2025/02/21 16:00:52 by dinda-si         ###   ########.fr       */
+/*   Updated: 2025/03/03 13:49:37 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,21 @@ int	check_map_x(t_map *map, int y)
 	return (0);
 }
 
+int	check_closed_2(t_map *map, int *y, int *x)
+{
+	if (map->matrix[*y][*x] == '0' || map->matrix[*y][*x] == 'N'
+		|| map->matrix[*y][*x] == 'S' || map->matrix[*y][*x] == 'W'
+		|| map->matrix[*y][*x] == 'E' )
+	{
+		if (map->matrix[*y][*x + 1] == ' ' || map->matrix[*y][*x - 1] == ' '
+		|| map->matrix[*y - 1][*x] == ' ' || map->matrix[*y + 1][*x] == ' '
+		|| map->matrix[*y][*x + 1] == '\n' || map->matrix[*y][*x - 1] == '\n'
+		|| map->matrix[*y - 1][*x] == '\n' || map->matrix[*y + 1][*x] == '\n')
+			return (1);
+	}
+	return (0);
+}
+
 int	check_closed(t_map *map)
 {
 	int	x;
@@ -42,13 +57,8 @@ int	check_closed(t_map *map)
 		x = 0;
 		while (x < map->x && map->matrix[y][x])
 		{
-			if (map->matrix[y][x] == ' ')
-			{
-				if (map->matrix[y][x + 1] == ' ')
-					x++;
-				else if (map->matrix[y][x + 1] != '1')
-					return (1);
-			}
+			if (check_closed_2(map, &y, &x) == 1)
+				return (1);
 			x++;
 		}
 		y++;

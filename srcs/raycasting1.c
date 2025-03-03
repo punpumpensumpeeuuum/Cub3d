@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 12:03:05 by jomendes          #+#    #+#             */
-/*   Updated: 2025/02/21 15:48:54 by dinda-si         ###   ########.fr       */
+/*   Updated: 2025/03/03 15:58:31 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,59 +28,54 @@ int	my_pixel_get(t_data *data, int x, int y)
 	return (*(unsigned int *)dst);
 }
 
-void	draw_walls(t_vc *vc, t_ray *ray, t_data *texture)
+void	compute_wall_texture_coords(t_vc *vc,
+	t_data *texture, double *texture_pos, int *texture_x)
 {
-	double	step;
-	double	texture_pos;
-	int		texture_y;
-	int		texture_x;
-	int		color;
-	int		y;
 	double	wall_x;
+	double	step;
 
-	step = 1.0 * 64 / ray->line_height;
-	texture_pos = (ray->wall_start - (Y_SCREEN / 2
-				+ ray->line_height / 2)) * step;
-	if (texture_pos < 0)
-		texture_pos = 0;
-	if (ray->side == 0)
-		wall_x = vc->player.pos_y + ray->real_size * ray->direction_y;
+	step = 1.0 * 64 / vc->ray.line_height;
+	*texture_pos = (vc->ray.wall_start - \
+		(Y_SCREEN / 2 + vc->ray.line_height / 2)) * step;
+	if (*texture_pos < 0)
+		*texture_pos = 0;
+	if (vc->ray.side == 0)
+		wall_x = vc->player.pos_y + vc->ray.real_size * vc->ray.direction_y;
 	else
-		wall_x = vc->player.pos_x + ray->real_size * ray->direction_x;
+		wall_x = vc->player.pos_x + vc->ray.real_size * vc->ray.direction_x;
 	wall_x -= floor(wall_x);
-	texture_x = (int)(wall_x * texture->img_size_x);
-	if ((ray->side == 0 && ray->direction_x > 0) || (ray->side == 1 && ray->direction_y < 0))
-		texture_x = texture->img_size_x - texture_x - 1;
-	y = ray->wall_start;
-	while (y < ray->wall_end)
+	*texture_x = (int)(wall_x * texture->img_size_x);
+	if ((vc->ray.side == 0 && vc->ray.direction_x > 0)
+		|| (vc->ray.side == 1 && vc->ray.direction_y < 0))
+		*texture_x = texture->img_size_x - *texture_x - 1;
+}
+
+void	draw_wall_segment(t_vc *vc, t_data *texture,
+	double texture_pos, int texture_x)
+{
+	int	texture_y;
+	int	color;
+	int	y;
+
+	y = vc->ray.wall_start;
+	while (y < vc->ray.wall_end)
 	{
 		texture_y = (int)texture_pos % texture->img_size_y;
 		color = my_pixel_get(texture, texture_x, texture_y);
-		if (ray->side == 1)
+		if (vc->ray.side == 1)
 			color = (color >> 1) & 0x7F7F7F;
-		my_mlx_pixel_put(vc->canva, ray->id, y, color);
-		texture_pos += step;
+		my_mlx_pixel_put(vc->canva, vc->ray.id, y, color);
+		texture_pos += (1.0 * 64 / vc->ray.line_height);
 		y++;
 	}
-	draw_floor_ceiling(vc, ray);
+	draw_floor_ceiling(vc, &vc->ray);
 }
 
-void	draw_floor_ceiling(t_vc *vc, t_ray *ray)
+void	draw_walls(t_vc *vc, t_data *texture)
 {
-	int	y;
+	double	texture_pos;
+	int		texture_x;
 
-	y = 0;
-	while (y < ray->wall_start)
-	{
-		my_mlx_pixel_put(vc->canva, ray->id, y, \
-			get_ceiling_color(&vc->map_info));
-		y++;
-	}
-	y = ray->wall_end + 1;
-	while (y < Y_SCREEN)
-	{
-		my_mlx_pixel_put(vc->canva, ray->id, y, \
-			get_floor_color(&vc->map_info));
-		y++;
-	}
+	compute_wall_texture_coords(vc, texture, &texture_pos, &texture_x);
+	draw_wall_segment(vc, texture, texture_pos, texture_x);
 }

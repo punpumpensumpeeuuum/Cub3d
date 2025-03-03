@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 15:43:22 by dinda-si          #+#    #+#             */
-/*   Updated: 2025/02/21 16:24:44 by dinda-si         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:02:33 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,8 @@ typedef struct s_ray
 	int				wall_end;
 	int				step_x;
 	int				step_y;
-	int				x_texture;
-	int				y_texture;
+	int				texture_x;
+	int				texture_y;
 }					t_ray;
 
 typedef struct s_map_info
@@ -162,6 +162,12 @@ typedef struct s_voidcollector
 	int				current_bee_image;
 }	t_vc;
 
+void	draw_wall_segment(t_vc *vc, t_data *texture,
+			double texture_pos, int texture_x);
+void	compute_wall_texture_coords(t_vc *vc, t_data *texture,
+			double *texture_pos, int *texture_x);
+int		check_closed_2(t_map *map, int *y, int *x);
+int		one_player(t_map *map);
 int		check_closed(t_map *map);
 int		where_is_player(t_map *map);
 char	*ft_trim_and_strdup(const char *str, int start);
@@ -220,7 +226,7 @@ void	dda_side_selector(t_vc *vc, t_ray *ray, t_player *player,
 			t_map_info *info);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int		get_raycolor(int tex_x, int tex_y, t_data *data);
-void	draw_walls(t_vc *vc, t_ray *ray, t_data *texture);
+void	draw_walls(t_vc *vc, t_data *texture);
 void	draw_floor_ceiling(t_vc *vc, t_ray *ray);
 
 // movement
