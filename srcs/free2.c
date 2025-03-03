@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 16:11:07 by dinda-si          #+#    #+#             */
-/*   Updated: 2025/02/21 16:15:45 by dinda-si         ###   ########.fr       */
+/*   Updated: 2025/03/03 17:30:46 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,7 @@
 
 void	free_game_game(t_vc *vc)
 {
-	if (vc->map_info.ea_texture && vc->map_info.ea_texture->img_ptr)
-	{
-		mlx_destroy_image(vc->mlx.mlx, vc->map_info.ea_texture->img_ptr);
-		free(vc->map_info.ea_texture);
-	}
-	if (vc->map_info.no_texture && vc->map_info.no_texture->img_ptr)
+	if (vc->map_info.ea_texture && vc->map_info.no_texture->img_ptr)
 	{
 		mlx_destroy_image(vc->mlx.mlx, vc->map_info.no_texture->img_ptr);
 		free(vc->map_info.no_texture);
@@ -28,6 +23,11 @@ void	free_game_game(t_vc *vc)
 	{
 		mlx_destroy_image(vc->mlx.mlx, vc->map_info.so_texture->img_ptr);
 		free(vc->map_info.so_texture);
+	}
+	if (vc->map_info.ea_texture && vc->map_info.ea_texture->img_ptr)
+	{
+		mlx_destroy_image(vc->mlx.mlx, vc->map_info.ea_texture->img_ptr);
+		free(vc->map_info.ea_texture);
 	}
 	if (vc->map_info.we_texture && vc->map_info.we_texture->img_ptr)
 	{

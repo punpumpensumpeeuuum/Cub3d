@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 16:08:04 by dinda-si          #+#    #+#             */
-/*   Updated: 2025/02/21 16:20:07 by dinda-si         ###   ########.fr       */
+/*   Updated: 2025/03/03 17:34:35 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ void	anotherinit(t_vc *vc)
 	vc->mlx.window = mlx_new_window(vc->mlx.mlx, vc->mlx.x, vc->mlx.y, "cub3d");
 	placeplayer(vc);
 	alloc_textures1(vc);
+	valid_textures(vc, vc->map_info.no);
+	valid_textures(vc, vc->map_info.so);
+	valid_textures(vc, vc->map_info.ea);
+	valid_textures(vc, vc->map_info.we);
 	alloc_textures(vc);
 	if (get_ceiling_color(&vc->map_info) == 1 || \
 		get_floor_color(&vc->map_info) == 1)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   textures.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dinda-si <dinda-si@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 13:41:52 by jomendes          #+#    #+#             */
-/*   Updated: 2025/02/21 15:51:04 by dinda-si         ###   ########.fr       */
+/*   Updated: 2025/03/03 17:35:16 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,34 +40,35 @@ void	alloc_textures1(t_vc *vc)
 			vc->map_info.we = ft_trim_and_strdup(vc->map.file[y], 2);
 		y++;
 	}
+	
 }
 
-void	load_texture(t_data *texture, void *mlx, char *file_path)
+void	valid_textures(t_vc *vc, char *file_path)
 {
 	if (file_path == NULL || *file_path == '\0')
 	{
 		printf("Error: Invalid texture file path.\n");
+		free_game(vc);
 		exit(1);
 	}
 	if (access(file_path, F_OK) != 0)
 	{
-		printf("Textureeee file not found: >%s<\n", file_path);
+		printf("Texture file not found: >%s<\n", file_path);
+		free_game(vc);
 		exit(1);
 	}
+}
+
+void	load_texture(t_data *texture, void *mlx, char *file_path)
+{
+	texture->img_ptr = NULL;
+	texture->addr = NULL;
+	if (access(file_path, F_OK) != 0)
+		return ;
 	texture->img_ptr = mlx_xpm_file_to_image(mlx, file_path,
 			&texture->img_size_x, &texture->img_size_y);
-	if (!texture->img_ptr)
-	{
-		printf("Error: failed to load texture: %s\n", file_path);
-		exit(1);
-	}
 	texture->addr = mlx_get_data_addr(texture->img_ptr, \
 			&texture->bits_per_pixel, &texture->line_length, &texture->endian);
-	if (texture->addr == NULL)
-	{
-		printf("Error: failed to get texture address: %s\n", file_path);
-		exit(1);
-	}
 }
 
 void	alloc_textures(t_vc *vc)
@@ -79,10 +80,7 @@ void	alloc_textures(t_vc *vc)
 	vc->canva = malloc(sizeof(t_data));
 	if (!vc->map_info.no_texture || !vc->map_info.so_texture || \
 			!vc->map_info.ea_texture || !vc->map_info.we_texture)
-	{
-		printf("Error: failed to allocate memory for textures.\n");
-		exit(1);
-	}
+				exit(1);
 	vc->canva->img_ptr = mlx_new_image(vc->mlx.mlx, X_SCREEN, Y_SCREEN);
 	vc->canva->addr = mlx_get_data_addr(vc->canva->img_ptr, \
 			&vc->canva->bits_per_pixel, &vc->canva->line_length, \
@@ -92,7 +90,7 @@ void	alloc_textures(t_vc *vc)
 	load_texture(vc->map_info.no_texture, vc->mlx.mlx, vc->map_info.no);
 	load_texture(vc->map_info.so_texture, vc->mlx.mlx, vc->map_info.so);
 	load_texture(vc->map_info.ea_texture, vc->mlx.mlx, vc->map_info.ea);
-	load_texture(vc->map_info.we_texture, vc->mlx.mlx, vc->map_info.we);
+	load_texture(vc->map_info.we_texture, vc->mlx.mlx, vc->map_info.we);;
 }
 
 int	rgb_def_check(char *str)
