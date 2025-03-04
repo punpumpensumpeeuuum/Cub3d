@@ -1,10 +1,10 @@
-NO srcs/xpm/parede.xpm
+NO srcs/xpm/wall_so.xpm
 
-SO srcs/xpm/parede.xpm
+SO srcs/xpm/wall_no.xpm
 
-WE srcs/xpm/parede.xpm
+WE srcs/xpm/wall_we.xpm
 
-EA srcs/xpm/parede.xpm
+EA srcs/xpm/wall_ea.xpm
 
 F 251,255,132
 

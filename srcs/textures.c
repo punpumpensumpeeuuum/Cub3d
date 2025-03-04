@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 13:41:52 by jomendes          #+#    #+#             */
-/*   Updated: 2025/03/03 17:35:16 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/03/04 10:50:49 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	alloc_textures1(t_vc *vc)
 			vc->map_info.we = ft_trim_and_strdup(vc->map.file[y], 2);
 		y++;
 	}
-	
 }
 
 void	valid_textures(t_vc *vc, char *file_path)
@@ -79,8 +78,8 @@ void	alloc_textures(t_vc *vc)
 	vc->map_info.we_texture = malloc(sizeof(t_data));
 	vc->canva = malloc(sizeof(t_data));
 	if (!vc->map_info.no_texture || !vc->map_info.so_texture || \
-			!vc->map_info.ea_texture || !vc->map_info.we_texture)
-				exit(1);
+		!vc->map_info.ea_texture || !vc->map_info.we_texture)
+		exit(1);
 	vc->canva->img_ptr = mlx_new_image(vc->mlx.mlx, X_SCREEN, Y_SCREEN);
 	vc->canva->addr = mlx_get_data_addr(vc->canva->img_ptr, \
 			&vc->canva->bits_per_pixel, &vc->canva->line_length, \
@@ -90,27 +89,5 @@ void	alloc_textures(t_vc *vc)
 	load_texture(vc->map_info.no_texture, vc->mlx.mlx, vc->map_info.no);
 	load_texture(vc->map_info.so_texture, vc->mlx.mlx, vc->map_info.so);
 	load_texture(vc->map_info.ea_texture, vc->mlx.mlx, vc->map_info.ea);
-	load_texture(vc->map_info.we_texture, vc->mlx.mlx, vc->map_info.we);;
-}
-
-int	rgb_def_check(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		while (str[i] == ' ')
-			i++;
-		while (ft_isdigit(str[i]))
-			i++;
-		while (str[i] == ' ')
-			i++;
-		if (ft_isprint(str[i]))
-		{
-			ft_putstr_fd("Tryharder to break this\n", 2);
-			return (1);
-		}
-	}
-	return (0);
+	load_texture(vc->map_info.we_texture, vc->mlx.mlx, vc->map_info.we);
 }

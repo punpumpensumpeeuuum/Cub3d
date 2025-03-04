@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 16:08:41 by dinda-si          #+#    #+#             */
-/*   Updated: 2025/03/03 15:58:12 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/03/04 10:50:55 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,26 @@ void	draw_floor_ceiling(t_vc *vc, t_ray *ray)
 			get_floor_color(&vc->map_info));
 		y++;
 	}
+}
+
+int	rgb_def_check(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		while (str[i] == ' ')
+			i++;
+		while (ft_isdigit(str[i]))
+			i++;
+		while (str[i] == ' ')
+			i++;
+		if (ft_isprint(str[i]))
+		{
+			ft_putstr_fd("Tryharder to break this\n", 2);
+			return (1);
+		}
+	}
+	return (0);
 }

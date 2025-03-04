@@ -6,7 +6,7 @@
 /*   By: jomendes <jomendes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 15:43:22 by dinda-si          #+#    #+#             */
-/*   Updated: 2025/03/03 17:34:48 by jomendes         ###   ########.fr       */
+/*   Updated: 2025/03/04 10:51:14 by jomendes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,7 +217,6 @@ void	free_game(t_vc *vc);
 void	destroy_map(t_vc *vc);
 void	free_mlx(t_vc *vc);
 void	valid_textures(t_vc *vc, char *file_path);
-
 
 // raycasting
 void	dda_style(t_vc *vc);
